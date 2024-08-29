@@ -10,19 +10,16 @@ import {
   createTeacher,
 } from "../../../Redux/Slice/TeacherSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { confirmDialog } from "primereact/confirmdialog";
 
 export default function TeacherForm({ label, data, visibles }) {
   const [formData, setFormData] = useState({});
   const [checked, setChecked] = useState(false);
-  const { Teacher, message, error, loading } = useSelector(
-    (state) => state.Teacher
-  );
+  const { Teacher, message, error, loading } = useSelector((state) => state.Teacher);
   const { Classs } = useSelector((state) => state.Class);
   const { Sections } = useSelector((state) => state.Section);
   const dispatch = useDispatch();
-  const formHandler = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const formHandler = (e) => {setFormData({ ...formData, [e.target.name]: e.target.value });};
 
   useEffect(() => {
     if (label === "u" && data) {
@@ -74,6 +71,29 @@ export default function TeacherForm({ label, data, visibles }) {
     });
   };
 
+  const confirm1 = () => {
+    confirmDialog({
+        message: 'Are you sure you want to save ?',
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        defaultFocus: 'accept',
+        acceptClassName: "bg-blue-500 px-5 py-3 text-white",
+        rejectClassName: "px-5 py-3 mx-3 ",
+        accept:onSubmit,
+    });
+};
+
+const confirm2 = () => {
+    confirmDialog({
+        message: 'Do you want to delete this update ?',
+        header: 'Delete Confirmation',
+        icon: 'pi pi-info-circle',
+        defaultFocus: 'accept',
+        acceptClassName: "bg-blue-500 px-5 py-3 text-white",
+        rejectClassName: "px-5 py-3 mx-3 ",
+        accept : onUpdate,
+    });
+  }
   return (
     <>
       <Toast ref={toast} />
@@ -129,7 +149,7 @@ export default function TeacherForm({ label, data, visibles }) {
             className="w-full h-12 rounded-lg  border-gray-300 border"
             autoComplete="off"
           />
-          <label htmlFor="mobile">Enter Mobile</label>
+          <label htmlFor="mobile">Enter Mobile <small className=" text-red-500">*</small></label>
         </span>
 
         <div className="flex gap-2 mt-7">
@@ -185,20 +205,20 @@ export default function TeacherForm({ label, data, visibles }) {
               formData?.name &&
               formData?.lastnm &&
               formData?.classs &&
-              formData?.section
+              formData?.section && formData?.mobile
                 ? false
                 : true
             }
-            onClick={onSubmit}
-            className="bg-cyan-500 text-white w-full py-3 mt-5"
+            onClick={confirm1}
+            className="bg-green-600 hover:bg-green-700 duration-200 text-white w-full py-3 mt-5"
             label="Create"
           />
         ) : (
           <Button
             loading={loading}
             disabled={loading}
-            onClick={onUpdate}
-            className="bg-cyan-500 text-white w-full py-3 mt-5"
+            onClick={confirm2}
+            className="bg-blue-600 hover:bg-blue-700 duration-200 text-white w-full py-3 mt-5"
             label="Update"
           />
         )}

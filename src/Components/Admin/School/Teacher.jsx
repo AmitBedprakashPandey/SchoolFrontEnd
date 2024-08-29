@@ -82,7 +82,7 @@ export default function Teacher({ school }) {
             setVisible(true);
           }}
           label="Create Teacher"
-          className="bg-cyan-500 hover:bg-cyan-600 duration-300 text-white p-2"
+          className="bg-blue-600 hover:bg-blue-700 duration-300 text-white p-2"
         />
       </div>
     );

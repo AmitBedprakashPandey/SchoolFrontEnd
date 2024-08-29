@@ -8,7 +8,7 @@ export const fetchAllIcards = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const res = await axios.get(`${url}/${data}`);
-      return res.data.find;
+      return res.data.data;
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -29,6 +29,7 @@ export const fetchByClassSectionSchoolAllIcards = createAsyncThunk(
     }
   }
 );
+
 export const createIcard = createAsyncThunk(
   "Icard/create",
   async (data, { rejectWithValue }) => {
@@ -89,7 +90,18 @@ export const updateManyIcards = createAsyncThunk(
     }
   }
 );
-
+// updateprintstatus
+export const updatePrintStatusMany = createAsyncThunk(
+  "icard/updatePrintStatusMany",
+  async (dataArray, { rejectWithValue }) => {
+    try {
+      const res = await axios.post(`${url}/updateprintstatus`, dataArray);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
 export const ICard = createSlice({
   name: "Icard",
   initialState: {
@@ -170,6 +182,24 @@ export const ICard = createSlice({
         state.loading = false;
       })
       .addCase(updateManyIcards.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload.error;
+      })
+      .addCase(updatePrintStatusMany.pending, (state) => {
+        state.loading = false;
+
+        state.message = null;
+        state.error = null;
+      })
+      .addCase(updatePrintStatusMany.fulfilled, (state, action) => {
+        for (let index = 0; index < action.payload.data.length; index++) {
+          state.ICards.push(action.payload.data[index]);
+        }
+        state.error = null;
+        state.message = action.payload.message;
+        state.loading = false;
+      })
+      .addCase(updatePrintStatusMany.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload.error;
       })

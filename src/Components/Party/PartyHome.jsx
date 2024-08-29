@@ -1,6 +1,7 @@
 import { Ripple } from "primereact/ripple";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { logout } from "../../Redux/Slice/PartySlice";
+import { Avatar } from "primereact/avatar";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useLayoutEffect } from "react";
 import { getByUserAllSchool } from "../../Redux/Slice/SchoolSlice";
@@ -62,7 +63,7 @@ export default function PartyHome(params) {
         <div className="flex justify-between px-10 py-4">
 
           <div className="flex items-center gap-4">
-            <BiUserCircle size="50" color="#fff" />
+          <Avatar icon="pi pi-user" size="normal" shape="circle" />           
             <label className="flex flex-col ">
               <small className="text-white">
                 {localStorage.getItem("schoolName")}

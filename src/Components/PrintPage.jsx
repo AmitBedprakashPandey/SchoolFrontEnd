@@ -1,4 +1,3 @@
-import jsPDF from "jspdf";
 import "jspdf-autotable";
 import moment from "moment";
 import { Button } from "primereact/button";
@@ -11,7 +10,6 @@ import { useLocation } from "react-router-dom";
 import ReactToPrint from "react-to-print";
 import { AllTemplateBySchoolStatus } from "../Redux/Slice/TemplateSlice";
 import "./print.css";
-import html2canvas from "html2canvas";
 
 export default function PrintPage() {
   const data = useLocation();
@@ -23,8 +21,7 @@ export default function PrintPage() {
   const refs = useRef([]);
   const refBulk = useRef();
   let cardsPerPage = temp2 && temp ? 5 : 10;
-  const [progress, setProgress] = useState(0); // State for progress percentage
-  const [generatingPdf, setGeneratingPdf] = useState(false);
+  
   useEffect(() => {
     dispatch(AllTemplateBySchoolStatus(localStorage.getItem("schoolid"))).then(
       (doc) => {
@@ -86,7 +83,7 @@ export default function PrintPage() {
       "${mothername}",
       data?.mothername
     );
-  modifiedTemplate = modifiedTemplate.replace(
+    modifiedTemplate = modifiedTemplate.replace(
       "${admission_id}",
       data?.admission_id
     );
@@ -158,8 +155,9 @@ export default function PrintPage() {
   useEffect(() => {
     BulkPrint();
   }, [data]);
-
- 
+const printHandler=()=>{
+  console.log(data);
+}
   return (
     <>
       {template == null && temp == null ? (
@@ -178,7 +176,7 @@ export default function PrintPage() {
       <div className="flex items-center">
         <ReactToPrint
           trigger={() => (
-            <Button className="py-3 px-10 bg-cyan-500 text-white m-5">
+            <Button onClick={printHandler} className="py-3 px-10 bg-cyan-500 text-white m-5">
               Print
             </Button>
           )}
@@ -204,8 +202,7 @@ export default function PrintPage() {
             </Button>
           )}
           content={() => refBulk.current} // Assuming only one page is printed at a time
-        />   
-   
+        />
       </div>
       {<BulkPrint />}
       {Array.from({ length: totalPages }, (_, pageIndex) => (

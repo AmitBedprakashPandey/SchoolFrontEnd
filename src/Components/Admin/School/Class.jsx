@@ -18,6 +18,7 @@ import {
 import { Checkbox } from "primereact/checkbox";
 import { Toast } from "primereact/toast";
 import { useNavigate } from "react-router-dom";
+import { confirmDialog } from "primereact/confirmdialog";
 export default function Class() {
   const dispatch = useDispatch();
 
@@ -64,7 +65,7 @@ export default function Class() {
   const renderHeader = () => {
     return (
       <div className="flex justify-between">
-        <span className="border rounded-lg relative">
+        <span className="border border-slate-400 rounded-lg relative">
           <i className="pi pi-search ml-2 absolute right-3 top-3" />
           <InputText
             value={globalFilterValue}
@@ -79,7 +80,7 @@ export default function Class() {
             setVisible(true);
           }}
           label="Create Class"
-          className="bg-cyan-500 text-white p-2"
+          className="bg-blue-600 hover:bg-blue-700 duration-300 text-white px-5 py-3"
         />
       </div>
     );
@@ -198,7 +199,7 @@ const ClassForm = ({ data, label }) => {
       severity: "success",
       summary: "Success Message",
       detail: message,
-      life: 3000,
+      life: 2000,
     });
   };
 
@@ -207,7 +208,7 @@ const ClassForm = ({ data, label }) => {
       severity: "info",
       summary: "Error Message",
       detail: error,
-      life: 3000,
+      life: 2000,
     });
   };
   useEffect(() => {
@@ -239,6 +240,29 @@ const ClassForm = ({ data, label }) => {
     );
   };
 
+  const confirm1 = () => {
+    confirmDialog({
+      message: "Are you sure you want to save ?",
+      header: "Confirmation",
+      icon: "pi pi-exclamation-triangle",
+      defaultFocus: "accept",
+      accept: onSubmit,
+      acceptClassName: "bg-blue-600 hover:bg-blue-700 px-5 py-3 text-white",
+      rejectClassName: "px-5 py-3 mx-3 ",
+    });
+  };
+
+  const confirm2 = () => {
+    confirmDialog({
+      message: "Do you want to delete this update ?",
+      header: "Delete Confirmation",
+      icon: "pi pi-info-circle",
+      defaultFocus: "accept",
+      accept: onUpdate,
+      acceptClassName: "bg-blue-600 hover:bg-blue-700 px-5 py-3 text-white",
+      rejectClassName: "px-5 py-3 mx-3 ",
+    });
+  };
   return (
     <div className="grid">
       <Toast ref={toast} />
@@ -250,7 +274,9 @@ const ClassForm = ({ data, label }) => {
           onChange={formDataHandler}
           className="border-gray-400 border h-12 w-full pl-3"
         />
-        <label htmlFor="username">Enter Class <strong className="text-red-500">*</strong></label>
+        <label htmlFor="username">
+          Enter Class <strong className="text-red-500">*</strong>
+        </label>
       </span>
       <span className="flex justify-center items-center gap-3 mt-4">
         <Checkbox
@@ -265,15 +291,15 @@ const ClassForm = ({ data, label }) => {
         {label === "u" ? (
           <Button
             label="Update"
-            onClick={onUpdate}
-            className="bg-cyan-500 w-full py-3 text-white"
+            onClick={confirm2}
+            className="bg-blue-600 hover:bg-blue-700 duration-300 w-full py-3 text-white"
           />
         ) : (
           <Button
             label="Save"
             disabled={formData?.class ? false : true}
-            onClick={onSubmit}
-            className="bg-cyan-500 w-full py-3 text-white"
+            onClick={confirm1}
+            className="bg-green-600 hover:bg-green-700 duration-300 w-full py-3 text-white"
           />
         )}
       </div>

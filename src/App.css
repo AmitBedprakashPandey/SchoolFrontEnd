@@ -85,9 +85,10 @@
 }
 
 .p-column-filter-element > .p-inputtext{
-  border: 1px solid rgba(192, 192, 192, 0.63);
-  padding: 5px 5px;
+  padding: 10px 8px;
   width: 100%;
+  border: 1px solid rgb(207, 207, 207);
+  border-radius: 5px;
 }
 
 
@@ -188,3 +189,8 @@ input[type='radio'] {
   font-size: 1rem;
   font-weight: 500;
 }
+
+.p-panelmenu .p-panelmenu-header .p-panelmenu-header-content{
+  background: transparent !important;
+}
+

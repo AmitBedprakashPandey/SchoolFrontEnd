@@ -217,7 +217,7 @@ export default function ICard() {
           {ICards?.map((item, index) => (
             <div
               key={index}
-              className="icard shadow-gray-400 shadow-lg  m-2 relative border-gray-300 border rounded-lg"
+              className="icard shadow-gray-400 shadow-md  m-2 relative border-gray-300 border rounded-md"
             >
               <div className="grid gap-3 absolute right-3 top-5 z-30">
                 {/* <div className=" text-white w-10 h-10 p-1 rounded-full  flex justify-center items-center">
@@ -253,24 +253,26 @@ export default function ICard() {
                 </div>
 
                 <div className="text-xs">
-                  <div className="">
-                    <label className="font-bold">Adm. No. :-</label>
-                    <span className="">{item.admission_id}</span>
-                  </div>
-                  <div className="">
-                    <label className="font-bold">Roll No. :-</label>
-                    <span className="">{item.rollno}</span>
+                  <div className="flex">
+                    <div className="w-full">
+                      <label className="font-bold">Adm. No. :-</label>
+                      <span className="">{item.admission_id}</span>
+                    </div>
+                    <div className=" w-full">
+                      <label className="font-bold">Roll No. :-</label>
+                      <span className="">{item.rollno}</span>
+                    </div>
                   </div>
                   <div className="">
                     <label className="font-bold">Name :-</label>
                     <span className="">{item.name}</span>
                   </div>
-                  <div className="">
-                    <div className="">
+                  <div className="flex">
+                    <div className="w-full">
                       <label className="font-bold">Class :-</label>
                       <span className="">{item.class}</span>
                     </div>
-                    <div className="">
+                    <div className="w-full">
                       <label className="font-bold capitalize">Section :-</label>
                       <span className="capitalize">{item.section}</span>
                     </div>

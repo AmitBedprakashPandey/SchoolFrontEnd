@@ -10,10 +10,7 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AllClassBySchoolStatus } from "../Redux/Slice/ClassSlice";
-import {
-  createIcard,
-  updateIcard
-} from "../Redux/Slice/IcardSlice";
+import { createIcard, updateIcard } from "../Redux/Slice/IcardSlice";
 import { AllSectionBySchoolStatus } from "../Redux/Slice/SectionSlice";
 import No_Image from "./Assets/Image/NO_IMAGE.jpg";
 import Loading from "./Loading";
@@ -23,6 +20,7 @@ import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
 import { BiCamera, BiMenu } from "react-icons/bi";
 import ImageCropper from "./ImageCropper2";
+import { Image } from "primereact/image";
 
 export default function ICardForm({ item, label, visbile, disble }) {
   const [formData, setFormData] = useState({
@@ -211,6 +209,17 @@ export default function ICardForm({ item, label, visbile, disble }) {
     });
   };
 
+  const confirm1 = () => {
+    confirmDialog({
+      message: "Are you sure you want to save ?",
+      header: "Confirmation",
+      icon: "pi pi-exclamation-triangle",
+      defaultFocus: "accept",
+      acceptClassName: "ml-3 bg-cyan-500 px-4 py-3 text-white",
+      rejectClassName: "px-4 py-3",
+      accept: onSave,
+    });
+  };
   const confirm2 = () => {
     confirmDialog({
       message: "Are you sure you want to update ?",
@@ -287,8 +296,8 @@ export default function ICardForm({ item, label, visbile, disble }) {
 
   return (
     <>
-      <ConfirmDialog />
-      <ConfirmPopup />
+      {/* <ConfirmDialog /> */}
+      {/* <ConfirmPopup /> */}
       <Toast ref={toast} />
       {loading && <Loading />}
       <Dialog
@@ -404,25 +413,34 @@ export default function ICardForm({ item, label, visbile, disble }) {
       </Dialog>
       <div className="bg-white">
         <form className="flex flex-col items-center">
-          <Button
-            type="button"
-            onClick={() => setVisbiles(true)}
-            label={<BiMenu />}
-            className="absolute right-14 p-3 border border-gray-500"
-          />
-          <div className="relative w-28 my-3">
-            <img
-              className="border w-[250px]"
-              src={imageData || No_Image}
-              alt="student"
+          <div className="flex justify-between w-full">
+            <div className="relative my-3">
+              <div className="w-36 h-36 border-2 border-black rounded-full overflow-hidden">
+                <Image
+                  className=" bg-center w-full h-full"
+                  src={imageData || No_Image}
+                  alt="student"
+                />
+              </div>
+              <input
+                type="file"
+                hidden
+                id="inpfile"
+                onChange={handleOnChange}
+              />
+              <label
+                htmlFor="inpfile"
+                className=" border-gray-500 border-2 rounded-full w-10 h-10 flex justify-center items-center font-bold absolute -bottom-2 -right-3 bg-blue-500"
+              >
+                <BiCamera color="#fff" size={30} />
+              </label>
+            </div>
+            <Button
+              type="button"
+              onClick={() => setVisbiles(true)}
+              label={<BiMenu />}
+              className="w-10 h-10 p-3 border border-gray-500"
             />
-            <input type="file" hidden id="inpfile" onChange={handleOnChange} />
-            <label
-              htmlFor="inpfile"
-              className=" border-gray-500 border-2 rounded-full w-10 h-10 flex justify-center items-center font-bold absolute -bottom-2 -right-3 bg-blue-500"
-            >
-              <BiCamera color="#fff" size={30} />
-            </label>
           </div>
           <div className="w-full  flex items-center my-1">
             <label
@@ -597,8 +615,8 @@ export default function ICardForm({ item, label, visbile, disble }) {
                   : true
               }
               loading={loading}
-              onClick={onSave}
-              className="flex items-center justify-center gap-2 bg-cyan-500 text-white py-3 px-36 my-2 disabled:bg-cyan-300"
+              onClick={confirm1}
+              className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-3 px-36 my-2 disabled:bg-cyan-300"
             ></Button>
           ) : (
             <Button
@@ -607,7 +625,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
               onClick={confirm2}
               disabled={loading}
               loading={loading}
-              className="flex items-center justify-center gap-2 bg-cyan-500 text-white py-3 px-32 my-2"
+              className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 duration-200 text-white py-3 px-32 my-2"
             ></Button>
           )}
         </div>

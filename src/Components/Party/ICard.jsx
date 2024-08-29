@@ -12,13 +12,7 @@ import { useNavigate } from "react-router-dom";
 import No_Image from "../Assets/Image/NO_IMAGE.jpg";
 
 import { Dropdown } from "primereact/dropdown";
-import {
-  BiChevronLeft,
-  BiEdit,
-  BiMenu,
-  BiPlus,
-  BiReset
-} from "react-icons/bi";
+import { BiChevronLeft, BiEdit, BiMenu, BiPlus, BiReset } from "react-icons/bi";
 import { AllClass } from "../../Redux/Slice/ClassSlice";
 import { fetchAllIcards } from "../../Redux/Slice/IcardSlice";
 import { AllSection } from "../../Redux/Slice/SectionSlice";
@@ -29,13 +23,12 @@ export default function ICard() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
-  const [visible2, setVisible2] = useState(false);
   const [imageFilter, setImageFilter] = useState(false);
   const [studentFilter, setStudentFilter] = useState(false);
   const [selectOneStudent, setSelectOneStudent] = useState();
   const [label, setLable] = useState("");
   const [searchInput, setSearchInput] = useState();
-  
+
   const [filterClass, setFilterClass] = useState("");
   const [filterSection, setFilterSection] = useState("");
   const { ICards, loading } = useSelector((state) => state.Icard);
@@ -44,7 +37,7 @@ export default function ICard() {
   const [filterIcard, setFilterIcard] = useState([]);
 
   useLayoutEffect(() => {
-    dispatch(fetchAllIcards(localStorage.getItem("schoolid"))).then((doc)=>{
+    dispatch(fetchAllIcards(localStorage.getItem("schoolid"))).then((doc) => {
       setFilterIcard(doc.payload.filter((item) => item.status == true));
     });
     dispatch(AllClass(localStorage.getItem("schoolid")));
@@ -94,11 +87,7 @@ export default function ICard() {
             </button>
             <span className="text-white font-semibold text-xl">ICard List</span>
           </div>
-          <div>
-            <Button onClick={() => setVisible2(true)} className="hidden">
-              <BiMenu size={30} color="#fff" />
-            </Button>
-          </div>
+          
         </div>
       </div>
 
@@ -119,21 +108,33 @@ export default function ICard() {
 
       <div className="w-fill sticky z-40 bg-white top-0 left-0 right-0 p-3">
         <div className="w-full grid mx-auto">
-          <div className="flex gap-5 items-center py-3">
-            <span className="flex items-center gap-3">
-              <label>Status</label>
-              <InputSwitch
-                checked={studentFilter}
-                onChange={(e) => setStudentFilter(e.value)}
-              />
-            </span>
-            <span className="flex items-center gap-3">
-              <label>Image</label>
-              <InputSwitch
-                checked={imageFilter}
-                onChange={(e) => setImageFilter(e.value)}
-              />
-            </span>
+          <div className="flex gap-5 justify-between py-3">
+            <div className="flex gap-5">
+              <span className="flex items-center gap-3">
+                <label>Status</label>
+                <InputSwitch
+                  checked={studentFilter}
+                  onChange={(e) => setStudentFilter(e.value)}
+                />
+              </span>
+              <span className="flex items-center gap-3">
+                <label>Image</label>
+                <InputSwitch
+                  checked={imageFilter}
+                  onChange={(e) => setImageFilter(e.value)}
+                />
+              </span>
+            </div>
+            <div className="">
+              <Button
+                icon={<BiPlus size={40} />}
+                className="bg-blue-500 h-10 w-16  text-white "
+                onClick={() => {
+                  setLable("s");
+                  setVisible(true);
+                }}
+              ></Button>
+            </div>
           </div>
           <div className=" flex gap-3 w-full">
             <IconField iconPosition="right" className="w-full">
@@ -193,16 +194,7 @@ export default function ICard() {
           </div>
         </div>
       </div>
-      <div>
-        <Button
-          icon={<BiPlus size={40} />}
-          className="absolute bottom-10 right-10 bg-blue-500 h-16 w-16 rounded-full text-white"
-          onClick={() => {
-            setLable("s");
-            setVisible(true);
-          }}
-        ></Button>
-      </div>
+
       <div className="flex justify-center">
         <div className="grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
           {filterIcard.filter(filterData).map((item, index) => (
@@ -223,31 +215,38 @@ export default function ICard() {
                 </Button>
               </div>
               <div className="flex items-center gap-3 relative p-2">
-                <div className="relative w-[150px] h-[150px]">
+                <div className="relative">
                   <Image
-                    className="w-full h-full"
+                    className=""
+                    width="120"
                     src={item?.image || No_Image}
                     alt="Image"
                     loading="lazy"
                   />
                 </div>
                 <div className="text-xs">
-                  <div className="">
-                    <label className="font-bold">Adm. No. :-</label>
-                    <span className="">{item.admission_id}</span>
+                  <div className="flex">
+                    <div className="w-full">
+                      <label className="font-bold">Adm. No. :-</label>
+                      <span className="">{item.admission_id}</span>
+                    </div>
+                    <div className=" w-full">
+                      <label className="font-bold">Roll No. :-</label>
+                      <span className="">{item.rollno}</span>
+                    </div>
                   </div>
                   <div className="">
                     <label className="font-bold">Name :-</label>
                     <span className="">{item.name}</span>
                   </div>
-                  <div className="">
-                    <div className="">
+                  <div className="flex">
+                    <div className="w-full">
                       <label className="font-bold">Class :-</label>
                       <span className="">{item.class}</span>
                     </div>
-                    <div className="">
-                      <label className="font-bold">Section :-</label>
-                      <span className="">{item.section}</span>
+                    <div className="w-full">
+                      <label className="font-bold capitalize">Section :-</label>
+                      <span className="capitalize">{item.section}</span>
                     </div>
                   </div>
                   <div className="">

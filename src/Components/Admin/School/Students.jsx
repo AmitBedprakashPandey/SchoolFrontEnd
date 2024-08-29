@@ -103,7 +103,7 @@ export default function Teacher({}) {
   const renderHeader = () => {
     return (
       <div className="flex justify-between">
-        <span className="border rounded-lg relative">
+        <span className="border border-slate-300 rounded-lg relative">
           <i className="pi pi-search ml-2 absolute right-3 top-3" />
           <InputText
             value={globalFilterValue}
@@ -116,14 +116,14 @@ export default function Teacher({}) {
         <Button
           label="Bulk student upload "
           onClick={() => setVisible2(true)}
-          className="bg-cyan-500 hover:bg-cyan-600 duration-300 text-white p-2"
+          className="bg-blue-600 hover:bg-blue-700 duration-200 text-white px-5"
         />
         <Button
           label={`Print ICard's (${selectedProducts.length})`}
           onClick={handlePrint}
           // disabled
           disabled={selectedProducts.length >= 1 ? false : true}
-          className="bg-cyan-500 hover:bg-cyan-600 duration-300 text-white p-2"
+           className="bg-blue-600 hover:bg-blue-700 duration-200 text-white px-5"
         />
 
         <Button
@@ -132,7 +132,7 @@ export default function Teacher({}) {
             setVisible(true);
           }}
           label="Create Student"
-          className="bg-cyan-500 hover:bg-cyan-600 duration-300 text-white p-2"
+            className="bg-blue-600 hover:bg-blue-700 duration-200 text-white px-5"
         />
       </div>
     );
@@ -196,9 +196,9 @@ export default function Teacher({}) {
           setVisible(true);
           setLable("u");
         }}
-        className="bg-cyan-500 p-2 text-white rounded-lg"
+          className="bg-blue-600 hover:bg-blue-700 duration-200 text-white p-2 rounded-full"
       >
-        <BiEdit />
+        <BiEdit size={20}/>
       </button>
     );
   };
@@ -256,7 +256,7 @@ export default function Teacher({}) {
       <div className="flex items-center gap-2">
         <Button
           label={`Move to Printed (${selectedPrinted.length})`}
-          className="bg-cyan-500 w-24 p-2 text-white hover:bg-cyan-600 duration-300"
+          className="bg-blue-600  w-24 p-2 text-white hover:bg-blue-700 duration-200"
           onClick={prindedSubmit}
         />
         <Checkbox
@@ -407,10 +407,10 @@ export default function Teacher({}) {
         <DataTable
           value={filterStudent}
           paginator
-          rows={10}
+          rows={5}
           footer={footer}
           size="small"
-          loading={loading}
+          // loading={loading}
           dataKey="_id"
           filters={filters}
           filterDisplay="row"

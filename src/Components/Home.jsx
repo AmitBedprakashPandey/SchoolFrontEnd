@@ -67,7 +67,7 @@ export default function Home() {
         <div className="flex justify-between">
           <div className="flex items-center gap-4">
             <label className="flex flex-col ">
-              <span className="italic text-white">{School?.name}</span>
+              <span className="italic text-white text-xs">{School?.name}</span>
             </label>
           </div>
           <div className="flex items-center gap-8">
@@ -191,6 +191,8 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      <div className="w-full py-4 fixed bottom-0 flex justify-center">Amit Pandey © Copyright 2024 v1 </div>
     </>
   );
 }
