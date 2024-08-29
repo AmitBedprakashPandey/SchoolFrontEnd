@@ -20,7 +20,7 @@ import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
 import { BiCamera, BiMenu } from "react-icons/bi";
 import ImageCropper from "./ImageCropper2";
-import { Image } from "primereact/image";
+// import { Image } from "primereact/image";
 
 export default function ICardForm({ item, label, visbile, disble }) {
   const [formData, setFormData] = useState({
@@ -50,6 +50,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
   const [fatherImage, setFatherImage] = useState(null);
   const [motherImage, setMotherImage] = useState(null);
   const [guardianImage, setGuardianImage] = useState(null);
+  const [aspectRatio, setAspectRatio] = useState();
   const disptch = useDispatch();
   const { Classs } = useSelector((state) => state.Class);
   const { Sections } = useSelector((state) => state.Section);
@@ -240,6 +241,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
       reader.readAsDataURL(event.target.files[0]);
       reader.onload = function () {
         setImage(reader.result);
+
         setVisbileModel(true);
       };
     }
@@ -247,51 +249,68 @@ export default function ICardForm({ item, label, visbile, disble }) {
 
   // Callback function when cropping is done
   const onCropDone = async (imgCroppedArea) => {
-    // Create a canvas element to crop the image
-    const canvasEle = document.createElement("canvas");
-    canvasEle.width = imgCroppedArea.width;
-    canvasEle.height = imgCroppedArea.height;
+    try {
+      // Create a canvas element to crop the image
+      setAspectRatio(imgCroppedArea);
+      const canvasEle = document.createElement("canvas");
+      canvasEle.width = imgCroppedArea.width;
+      canvasEle.height = imgCroppedArea.height;
 
-    const context = canvasEle.getContext("2d");
+      const context = canvasEle.getContext("2d");
 
-    // Load the selected image
-    let imageObj1 = new Image();
-    imageObj1.src = image;
-    imageObj1.onload = async function () {
-      // Draw the cropped portion of the image onto the canvas
-      context.drawImage(
-        imageObj1,
-        imgCroppedArea.x,
-        imgCroppedArea.y,
-        imgCroppedArea.width,
-        imgCroppedArea.height,
-        0,
-        0,
-        imgCroppedArea.width,
-        imgCroppedArea.height
-      );
+      // Load the selected image
+      const imageObj1 = new Image();
+      imageObj1.src = image;
 
-      // Convert the canvas content to a data URL (JPEG format)
-      const dataURL = canvasEle.toDataURL("image/jpeg");
+      // Ensure the image loads fully before proceeding
+      imageObj1.onload = async function () {
+        try {
+          // Draw the cropped portion of the image onto the canvas
+          context.drawImage(
+            imageObj1,
+            imgCroppedArea.x,
+            imgCroppedArea.y,
+            imgCroppedArea.width,
+            imgCroppedArea.height,
+            0,
+            0,
+            imgCroppedArea.width,
+            imgCroppedArea.height
+          );
 
-      const blob = await fetch(dataURL).then((res) => res.blob());
+          // Convert the canvas content to a data URL (JPEG format)
+          const dataURL = canvasEle.toDataURL("image/jpeg");
 
-      new Compressor(blob, {
-        quality: 0.4,
-        maxWidth: 500,
-        success(result) {
-          const reader = new FileReader();
-          reader.readAsDataURL(result);
-          reader.onloadend = () => {
-            setImageData(reader.result);
-            setVisbileModel(false);
-          };
-        },
-        error(err) {
-          console.error(err.message);
-        },
-      });
-    };
+          // Convert dataURL to Blob
+          const blob = await fetch(dataURL).then((res) => res.blob());
+
+          // Compress the image using Compressor.js
+          new Compressor(blob, {
+            quality: 0.4,
+            maxWidth: 500,
+            success(result) {
+              const reader = new FileReader();
+              reader.readAsDataURL(result);
+              reader.onloadend = () => {
+                setImageData(reader.result);
+                setVisbileModel(false); // Close the modal
+              };
+            },
+            error(err) {
+              console.error("Compression Error:", err.message);
+            },
+          });
+        } catch (drawError) {
+          console.error("Error drawing image on canvas:", drawError);
+        }
+      };
+
+      imageObj1.onerror = (loadError) => {
+        console.error("Image loading error:", loadError);
+      };
+    } catch (cropError) {
+      console.error("Error in onCropDone function:", cropError);
+    }
   };
 
   return (
@@ -416,8 +435,8 @@ export default function ICardForm({ item, label, visbile, disble }) {
           <div className="flex justify-between w-full">
             <div className="relative my-3">
               <div className="w-36 h-36 border-2 border-black rounded-full overflow-hidden">
-                <Image
-                  className=" bg-center w-full h-full"
+                <img
+                  className="bg-center w-full h-full"
                   src={imageData || No_Image}
                   alt="student"
                 />
