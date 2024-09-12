@@ -21,7 +21,7 @@ export default function PrintPage() {
   const refs = useRef([]);
   const refBulk = useRef();
   let cardsPerPage = temp2 && temp ? 5 : 10;
-  
+
   useEffect(() => {
     dispatch(AllTemplateBySchoolStatus(localStorage.getItem("schoolid"))).then(
       (doc) => {
@@ -155,9 +155,9 @@ export default function PrintPage() {
   useEffect(() => {
     BulkPrint();
   }, [data]);
-const printHandler=()=>{
-  console.log(data);
-}
+  const printHandler = () => {
+    console.log(data);
+  };
   return (
     <>
       {template == null && temp == null ? (
@@ -176,7 +176,10 @@ const printHandler=()=>{
       <div className="flex items-center">
         <ReactToPrint
           trigger={() => (
-            <Button onClick={printHandler} className="py-3 px-10 bg-cyan-500 text-white m-5">
+            <Button
+              onClick={printHandler}
+              className="py-3 px-10 bg-cyan-500 text-white m-5"
+            >
               Print
             </Button>
           )}

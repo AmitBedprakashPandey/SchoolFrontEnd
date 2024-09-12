@@ -14,7 +14,6 @@ import { PrimeReactProvider,PrimeReactContext } from "primereact/api";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const value = {
   ripple: true,
-  unstyled: false,
 };
 root.render(
   <React.StrictMode>

@@ -29,6 +29,8 @@ export default function AdminHome(params) {
     };
   }, []);
 
+
+
   const menuItems = [
     {
       key: "0",
@@ -197,7 +199,8 @@ export default function AdminHome(params) {
             }))}
           ></PanelMenu>
           <small className="absolute bottom-0 py-5 flex justify-center w-full">
-            Amit Pandey © Copyright 2024 v1
+            Amit Pandey © Copyright 2024 v1{" "}
+           
           </small>
         </div>
         <div className="w-[87vw] h-[93vh] bg-gray-100 p-2 ml-2 shadow-lg shadow-slate-500 overflow-hidden z-40">
