@@ -14,6 +14,7 @@ import TeacherLoginUpdate from "./TeacherLoginUpdate";
 import { AllClassBySchoolStatus } from "../../../Redux/Slice/ClassSlice";
 import { AllSectionBySchoolStatus } from "../../../Redux/Slice/SectionSlice";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../Loading";
 export default function Teacher({ school }) {
   const dispatch = useDispatch();
 
@@ -24,14 +25,19 @@ export default function Teacher({ school }) {
   const { Teacher, loading } = useSelector((state) => state.Teacher);
 
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!localStorage.getItem("Admintoken")) {
       return navigate("/adminlogin");
     }
-    dispatch(getAllTeacherBySchool(localStorage.getItem("schoolid")));
-    dispatch(AllClassBySchoolStatus(localStorage.getItem("schoolid")));
-    dispatch(AllSectionBySchoolStatus(localStorage.getItem("schoolid")));
+    if (!Teacher?.length >= 0) {
+      dispatch(getAllTeacherBySchool(localStorage.getItem("schoolid")));
+
+      dispatch(AllClassBySchoolStatus(localStorage.getItem("schoolid")));
+      dispatch(AllSectionBySchoolStatus(localStorage.getItem("schoolid")));
+    }
   }, [dispatch, navigate]);
+
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -39,6 +45,7 @@ export default function Teacher({ school }) {
     section: { value: null, matchMode: FilterMatchMode.EQUALS },
     status: { value: null, matchMode: FilterMatchMode.EQUALS },
   });
+
   const [globalFilterValue, setGlobalFilterValue] = useState("");
 
   const [statuses] = useState([true, false]);
@@ -66,12 +73,12 @@ export default function Teacher({ school }) {
   const renderHeader = () => {
     return (
       <div className="flex justify-between">
-        <span className="border rounded-lg relative">
-          <i className="pi pi-search ml-2 absolute right-3 top-3" />
+        <span className="border border-slate-300 rounded-lg relative">
+          <i className="pi pi-search absolute my-2 px-2" />
           <InputText
             value={globalFilterValue}
             onChange={onGlobalFilterChange}
-            className="py-2 px-2 border-gray-300 border"
+            className="w-full h-full md:text-xs md:pl-8"
             placeholder="Keyword Search"
           />
         </span>
@@ -82,7 +89,7 @@ export default function Teacher({ school }) {
             setVisible(true);
           }}
           label="Create Teacher"
-          className="bg-blue-600 hover:bg-blue-700 duration-300 text-white p-2"
+          className="md:text-xs bg-blue-600 hover:bg-blue-700 duration-300 text-white py-2 px-4"
         />
       </div>
     );
@@ -113,18 +120,21 @@ export default function Teacher({ school }) {
         options={statuses}
         onChange={(e) => options.filterApplyCallback(e.value)}
         itemTemplate={statusItemTemplate}
-        placeholder="Select One"
-        className="p-column-filter"
+        placeholder="Select"
+        panelClassName="p-0"
+        className="border "
         showClear
-        style={{ minWidth: "12rem" }}
+        style={{ minWidth: "4rem", maxWidth: "12rem" }}
       />
     );
   };
 
   const header = renderHeader();
-  const footer = `In total there are ${
-    Teacher ? Teacher.length : 0
-  } Teacher's.`;
+  const footer = (
+    <div className="text-xs capitalize">
+      In total there are {Teacher ? Teacher.length : 0} Teacher's.
+    </div>
+  );
   return (
     <>
       <Dialog
@@ -147,6 +157,7 @@ export default function Teacher({ school }) {
       >
         <TeacherLoginUpdate data={selectTeacher} />
       </Dialog>
+      {loading && <Loading />}
       <div className="card">
         <DataTable
           size="small"
@@ -154,13 +165,13 @@ export default function Teacher({ school }) {
           paginator
           rows={10}
           footer={footer}
-          loading={loading}
           dataKey="id"
           filters={filters}
           filterDisplay="row"
           globalFilterFields={["name", "lastnm"]}
           header={header}
           stripedRows
+          className="mx-2"
           showGridlines
           emptyMessage="No customers found."
           selectionMode="single"
@@ -175,62 +186,72 @@ export default function Teacher({ school }) {
             header="Name"
             filter
             showFilterMenu={false}
-            filterPlaceholder="Search by name"
-            style={{ minWidth: "12rem" }}
-            headerClassName="text-xs"
-            className="text-xs"
+            filterPlaceholder="Search"
+            style={{ minWidth: "8rem", maxWidth: "12rem" }}
+            headerClassName="text-xs md:text-[7pt]"
+            className="text-xs md:text-[8pt]"
           />
           <Column
             field="lastnm"
             header={"Last Name"}
-            style={{ minWidth: "12rem" }}
-            headerClassName="text-xs"
-            className="text-xs"
+            filterHeaderClassName="p-0 m-0"
+            style={{
+              minWidth: "6rem",
+              maxWidth: "12rem",
+              margin: 0,
+              padding: 0,
+            }}
+            headerClassName="text-xs md:text-[7pt]"
+            className="text-xs md:text-[8pt]"
           />
           <Column
             field="classs"
             header="Class"
             filter
-            filterPlaceholder="Search by name"
-            style={{ minWidth: "12rem" }}
-            headerClassName="text-xs"
+            filterPlaceholder="Search"
+            filterHeaderClassName="p-0 m-0"
+            style={{ minWidth: "6rem", maxWidth: "12rem" }}
+            headerClassName="text-xs md:text-[7pt]"
             showFilterMenu={false}
-            className="text-xs"
+            className="text-xs md:text-[8pt]"
           />
           <Column
             field="section"
             header="Section"
             filter
-            filterPlaceholder="Search by name"
-            style={{ minWidth: "12rem" }}
+            filterPlaceholder="Search"
+            filterHeaderClassName="p-0 m-0"
+            style={{ minWidth: "6rem", maxWidth: "12rem" }}
             showFilterMenu={false}
-            headerClassName="text-xs"
-            className="text-xs"
+            headerClassName="text-xs md:text-[7pt]"
+            className="text-xs md:text-[8pt]"
           />
           <Column
             field="address"
             header="Address"
-            className="text-xs"
+            filterHeaderClassName="p-0 m-0"
+            headerClassName="text-xs md:text-[8pt] m-0 p-0"
+            className="text-xs md:text-[8pt]"
             style={{ minWidth: "14rem" }}
           />
           <Column
             field="mobile"
             header="Mobile"
             style={{ minWidth: "14rem" }}
-            headerClassName="text-xs"
-            className="text-xs"
+            headerClassName="text-xs md:text-[7pt]"
+            className="text-xs md:text-[8pt]"
           />
           <Column
             field="status"
             header="Status"
             showFilterMenu={false}
             filterMenuStyle={{ width: "14rem" }}
-            style={{ minWidth: "12rem" }}
+            style={{ minWidth: "8rem", maxWidth: "12rem" }}
             filter
             body={statusBodyTemplate}
             filterElement={statusRowFilterTemplate}
-            headerClassName="text-xs"
-            className="text-xs"
+            headerClassName="text-xs md:text-[7pt]"
+            className="text-xs md:text-[8pt]"
           />
         </DataTable>
       </div>

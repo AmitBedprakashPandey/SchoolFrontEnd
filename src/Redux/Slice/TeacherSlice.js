@@ -11,7 +11,9 @@ export const getAllTeacherBySchool = createAsyncThunk(
     try {
       const res = await axios.get(`${url}/byschool/${id}`);
       return res.data;
+      
     } catch (error) {
+      console.log(error)
       return rejectWithValue(error);
     }
   }

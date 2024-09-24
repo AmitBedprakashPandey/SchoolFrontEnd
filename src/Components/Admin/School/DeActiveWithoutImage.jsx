@@ -8,7 +8,7 @@ import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { Tag } from "primereact/tag";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { BiEdit } from "react-icons/bi";
+import { BiCheckCircle, BiEdit,BiXCircle } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AllClass } from "../../../Redux/Slice/ClassSlice";
@@ -113,14 +113,14 @@ export default function DeActiveWithoutImage({}) {
         <Button
           label="Bulk student upload "
           onClick={() => setVisible2(true)}
-          className="bg-cyan-500 hover:bg-cyan-600 duration-300 text-white p-2"
+          className="bg-blue-500 hover:bg-blue-600 duration-300 text-white p-2"
         />
         <Button 
           label={`Print ICard's (${selectedProducts.length})`}
           onClick={handlePrint}
           //  disabled
          disabled={selectedProducts.length >= 1 ? false : true}
-          className="bg-cyan-500 hover:bg-cyan-600 duration-300 text-white p-2"
+          className="bg-blue-500 hover:bg-blue-600 duration-300 text-white p-2"
         />
 
         <Button
@@ -129,7 +129,7 @@ export default function DeActiveWithoutImage({}) {
             setVisible(true);
           }}
           label="Create Student"
-          className="bg-cyan-500 hover:bg-cyan-600 duration-300 text-white p-2"
+          className="bg-blue-500 hover:bg-blue-600 duration-300 text-white p-2"
         />
       </div>
     );
@@ -138,7 +138,7 @@ export default function DeActiveWithoutImage({}) {
   const statusBodyTemplate = (rowData) => {
     return (
       <Tag
-        value={rowData.status === true ? "Active" : "De-active"}
+        value={rowData.status === true ? <BiCheckCircle size={20} />  : <BiXCircle size={20} />}
         severity={getSeverity(rowData.status || false)}
       />
     );
@@ -147,7 +147,7 @@ export default function DeActiveWithoutImage({}) {
   const statusItemTemplate = (option) => {
     return (
       <Tag
-        value={option === true ? "Active" : "De-Active"}
+        value={option === true ?<BiCheckCircle size={20} /> : <BiXCircle size={20} />}
         severity={getSeverity(option)}
       />
     );
@@ -192,7 +192,7 @@ export default function DeActiveWithoutImage({}) {
           setVisible(true);
           setLable("u");
         }}
-        className="bg-cyan-500 p-2 text-white rounded-lg"
+        className="bg-blue-500 p-2 text-white rounded-lg"
       >
         <BiEdit />
       </button>
@@ -236,7 +236,7 @@ export default function DeActiveWithoutImage({}) {
       <Button
         onClick={prindedSubmit}
         label={`Move to Printed (${selectedPrinted.length})`}
-        className="bg-cyan-500 w-24 p-2 text-white hover:bg-cyan-600 duration-300"
+        className="bg-blue-500 w-24 p-2 text-white hover:bg-blue-600 duration-300"
       />
     );
   };

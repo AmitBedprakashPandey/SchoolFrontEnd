@@ -22,7 +22,7 @@ export const getByUserAllSchool = createAsyncThunk(
     try {
       const res = await axios.get(
         `${url}/${id}`
-      );
+      ); 
       localStorage.setItem("schoolName", res.data.name);
       return res.data;
     } catch (error) {

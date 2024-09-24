@@ -14,7 +14,7 @@ import {
   CreateClass,
   UpdateClass,
 } from "../../../Redux/Slice/ClassSlice";
-
+import {  PiPlus} from "react-icons/pi";
 import { Checkbox } from "primereact/checkbox";
 import { Toast } from "primereact/toast";
 import { useNavigate } from "react-router-dom";
@@ -65,13 +65,14 @@ export default function Class() {
   const renderHeader = () => {
     return (
       <div className="flex justify-between">
-        <span className="border border-slate-400 rounded-lg relative">
-          <i className="pi pi-search ml-2 absolute right-3 top-3" />
+        <span className="border border-slate-400 lg:h-12 rounded-lg relative flex items-center">
+          <i className="pi pi-search ml-2 absolute my-4" />
           <InputText
             value={globalFilterValue}
             onChange={onGlobalFilterChange}
-            className="py-2 px-2"
+            className="py-2 pl-8"
             placeholder="Keyword Search"
+            
           />
         </span>
         <Button
@@ -79,8 +80,9 @@ export default function Class() {
             setLable("s");
             setVisible(true);
           }}
-          label="Create Class"
-          className="bg-blue-600 hover:bg-blue-700 duration-300 text-white px-5 py-3"
+          icon={<PiPlus size={20}  />}
+          label="Create"
+          className="gap-3 bg-blue-600 hover:bg-blue-700 duration-300 text-white px-5 py-3"
         />
       </div>
     );
@@ -112,7 +114,7 @@ export default function Class() {
         onChange={(e) => options.filterApplyCallback(e.value)}
         itemTemplate={statusItemTemplate}
         placeholder="Select One"
-        className="p-column-filter"
+        className="p-column-filter border"
         showClear
         style={{ minWidth: "12rem" }}
       />
@@ -160,7 +162,7 @@ export default function Class() {
             showFilterMenu={false}
             header="Class"
             filterPlaceholder="Search Class"
-            style={{ minWidth: "14rem" }}
+            style={{ width: "12rem" }}
             headerClassName="text-xs"
             className="text-xs "
           />
@@ -169,7 +171,7 @@ export default function Class() {
             header="Status"
             showFilterMenu={false}
             filterMenuStyle={{ width: "8rem" }}
-            style={{ minWidth: "8rem" }}
+            style={{ width: "12rem" }}
             filter
             body={statusBodyTemplate}
             filterElement={statusRowFilterTemplate}

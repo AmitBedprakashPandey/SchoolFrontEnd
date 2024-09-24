@@ -111,14 +111,14 @@ export default function PrintedICards({}) {
         <Button
           label="Bulk student upload "
           onClick={() => setVisible2(true)}
-          className="bg-cyan-500 hover:bg-cyan-600 duration-300 text-white p-2"
+          className="bg-blue-500 hover:bg-blue-600 duration-300 text-white p-2"
         />
         <Button
           label={`Print ICard's (${selectedProducts.length})`}
           onClick={handlePrint}
           // disabled
          disabled={selectedProducts.length >= 1 ? false : true}
-          className="bg-cyan-500 hover:bg-cyan-600 duration-300 text-white p-2"
+          className="bg-blue-500 hover:bg-blue-600 duration-300 text-white p-2"
         />
 
         <Button
@@ -127,7 +127,7 @@ export default function PrintedICards({}) {
             setVisible(true);
           }}
           label="Create Student"
-          className="bg-cyan-500 hover:bg-cyan-600 duration-300 text-white p-2"
+          className="bg-blue-500 hover:bg-blue-600 duration-300 text-white p-2"
         />
       </div>
     );
@@ -192,7 +192,7 @@ export default function PrintedICards({}) {
           setVisible(true);
           setLable("u");
         }}
-        className="bg-cyan-500 p-2 text-white rounded-lg"
+        className="bg-blue-500 p-2 text-white rounded-lg"
       >
         <BiEdit />
       </button>
@@ -238,7 +238,7 @@ export default function PrintedICards({}) {
         <Button
           disabled={selectedPrinted != 0 ? false : true}
           label={`Move to Student (${selectedPrinted.length})`}
-          className="bg-cyan-500 w-24 p-2 text-white hover:bg-cyan-600 duration-300"
+          className="bg-blue-500 w-24 p-2 text-white hover:bg-blue-600 duration-300"
           onClick={prindedSubmit}
         />
         <Checkbox

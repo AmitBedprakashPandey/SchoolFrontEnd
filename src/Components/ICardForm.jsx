@@ -20,6 +20,7 @@ import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
 import { BiCamera, BiMenu } from "react-icons/bi";
 import ImageCropper from "./ImageCropper2";
+import { PiCheck } from "react-icons/pi";
 // import { Image } from "primereact/image";
 
 export default function ICardForm({ item, label, visbile, disble }) {
@@ -623,7 +624,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
           {label === "s" ? (
             <Button
               label="save"
-              icon="pi pi-check"
+              icon={<PiCheck size={20} />}
               disabled={
                 formData.name &&
                 selectedClass &&
@@ -635,7 +636,8 @@ export default function ICardForm({ item, label, visbile, disble }) {
               }
               loading={loading}
               onClick={confirm1}
-              className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-3 px-36 my-2 disabled:bg-cyan-300"
+              className="bg-green-600 hover:bg-green-700 text-white py-3 px-36
+               my-2 disabled:bg-green-800"
             ></Button>
           ) : (
             <Button

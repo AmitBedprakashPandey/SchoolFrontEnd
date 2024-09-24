@@ -19,6 +19,7 @@ import {
   CreateSection,
   UpdateSection,
 } from "../../../Redux/Slice/SectionSlice";
+import { PiPlus } from "react-icons/pi";
 export default function Section() {
   const dispatch = useDispatch();
   const [selectTeacher, setSelectTeacher] = useState();
@@ -27,17 +28,20 @@ export default function Section() {
   const [label, setLable] = useState();
   const { Sections, loading } = useSelector((state) => state.Section);
   const navigate = useNavigate();
+
   useEffect(() => {
-    dispatch(AllSection(localStorage.getItem("schoolid")));
+     dispatch(AllSection(localStorage.getItem("schoolid")));
     if (!localStorage.getItem("Admintoken")) {
       return navigate("/adminlogin");
     }
   }, [dispatch, navigate]);
+  
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     section: { value: null, matchMode: FilterMatchMode.EQUALS },
     status: { value: null, matchMode: FilterMatchMode.EQUALS },
   });
+  
   const [globalFilterValue, setGlobalFilterValue] = useState("");
 
   const [statuses] = useState([true, false]);
@@ -79,8 +83,9 @@ export default function Section() {
             setLable("s");
             setVisible(true);
           }}
-          label="Create Section"
-          className="bg-cyan-500 text-white p-2"
+          icon={<PiPlus strokeWidth={20} />}
+          label="Create"
+          className="gap-3 px-4 bg-blue-500 hover:bg-blue-600 duration-300 text-white p-2"
         />
       </div>
     );
@@ -266,14 +271,14 @@ const SectionForm = ({ data, label }) => {
           <Button
             label="Update"
             onClick={onUpdate}
-            className="bg-cyan-500 w-full py-3 text-white"
+            className="bg-blue-500 hover:bg-blue-600 duration-300 w-full py-3 text-white"
           />
         ) : (
           <Button
             label="Save"
             disabled={formData?.section ? false : true}
             onClick={onSubmit}
-            className="bg-cyan-500 w-full py-3 text-white"
+            className="bg-green-500 hover:bg-green-600 duration-300 w-full py-3 text-white"
           />
         )}
       </div>
