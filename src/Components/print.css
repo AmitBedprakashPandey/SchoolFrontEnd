@@ -22,9 +22,16 @@
   padding: 15px;
 }
 
+
 @media print {
   @page {
     padding: 15px;
+    size: A4;
+    margin: 0.5cm; 
+    /* Add page numbers to the footer */
+     @bottom-center {
+      content: counter(page);
+    }
   }
 
   .A4Page {

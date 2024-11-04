@@ -32,7 +32,6 @@ export default function Teacher({ school }) {
     }
     if (!Teacher?.length >= 0) {
       dispatch(getAllTeacherBySchool(localStorage.getItem("schoolid")));
-
       dispatch(AllClassBySchoolStatus(localStorage.getItem("schoolid")));
       dispatch(AllSectionBySchoolStatus(localStorage.getItem("schoolid")));
     }

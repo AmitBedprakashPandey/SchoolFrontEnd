@@ -14,6 +14,7 @@ import {
   PiShuffleDuotone,
   PiIdentificationBadgeDuotone,
   PiXDuotone,
+  PiCardsDuotone,
 } from "react-icons/pi";
 import { verifyExpire } from "../../Redux/Slice/ExpireSlice";
 export default function AdminHome(params) {
@@ -42,28 +43,28 @@ export default function AdminHome(params) {
       label: "Teacher's",
       // icon: "pi pi-users",
       url: "teacher",
-      icon: <PiChalkboardTeacherDuotone size={25} />,
+      icon: <PiChalkboardTeacherDuotone size={20} />,
     },
     {
       key: "2",
       label: "Students",
       // icon: "pi pi-users",
       url: "student",
-      icon: <PiStudentDuotone size={25} />,
+      icon: <PiStudentDuotone size={20} />,
     },
     {
       key: "3",
       label: "Class",
       // icon: "pi pi-users",
       url: "class",
-      icon: <PiShuffleDuotone size={25} />,
+      icon: <PiShuffleDuotone size={20} />,
     },
     {
       key: "4",
       label: "Section",
       // icon: "pi pi-users",
       url: "section",
-      icon: <PiShuffleDuotone size={25} />,
+      icon: <PiShuffleDuotone size={20} />,
     },
     {
       key: "5",
@@ -71,14 +72,20 @@ export default function AdminHome(params) {
       // icon: "pi pi-users",
       url: "printed",
       disabled: localStorage.getItem("expiredStatus") === true ? true : false,
-      icon: <PiIdentificationBadgeDuotone size={25} />,
+      icon: <PiIdentificationBadgeDuotone size={20} />,
     },
     {
       key: "5",
       label: "De-Active",
       // icon: "pi pi-users",
       url: "deactivewithoutimage",
-      icon: <PiXDuotone size={25} />,
+      icon: <PiXDuotone size={20} />,
+    },{
+      key: "6",
+      label: "Admin Card",
+      // icon: "pi pi-users",
+      url: "admitcard",
+      icon: <PiCardsDuotone size={20} />,
     },
   ];
 
@@ -133,7 +140,7 @@ export default function AdminHome(params) {
       <div className="flex w-screen h-screen bg-slate-300 z-40">
         <div className="relative bg-white w-64 z-40">
           <div className="w-full grid">
-          <h1 className="bg-blue-600 lg:py-3 lg:pl-5 text-white font-bold uppercase text-sm">
+          <h1 className="bg-blue-600 py-2 pl-5 text-white font-bold uppercase text-xs">
               {School?.name}
             </h1>
             {menuItems.map((item, index) => (
@@ -142,23 +149,24 @@ export default function AdminHome(params) {
                 key={index}
                 className={`${
                   pathname === item.url
-                    ? "bg-blue-600 text-white "
+                    ? "bg-blue-600 text-white"
                     : "bg-white hover:bg-blue-200"
-                } duration-300 md:text-xs lg:text-sm md:py-2 px-4 flex items-center gap-3`}
+                } duration-300 text-xs py-2 px-4 flex items-center gap-3`}
               >
                 {item.icon}
                 {item.label}
               </Link>
             ))}
           </div>
-          <small className="md:text-[6pt] lg:text-[8pt] absolute bottom-0 py-5 flex justify-center w-full">
+          <small className="text-[6pt] absolute bottom-0 py-5 flex justify-center w-full">
             Amit Pandey © Copyright 2024 v0.1
           </small>
         </div>
         <div className="w-full overflow-hidden z-40">
-          <div className="bg-blue-600 flex justify-end md:py-2 lg:py-3 px-10 py-5 sticky top-0 z-40">
+          <div className="bg-blue-600 flex justify-end px-10 py-1.5
+           sticky top-0 z-40">
             <div className="flex gap-3 items-center">
-              <div className="flex  md:text-xs lg:text-sm  font text-white italic gap-1">
+              <div className="flex  text-xs text-white italic gap-1">
                 <small>Hello,</small>
                 <small>{localStorage.getItem("email")}</small>
               </div>
@@ -169,7 +177,7 @@ export default function AdminHome(params) {
               />
             </div>
           </div>
-          <div className="m-2 bg-white h-full">
+          <div className="m-1 bg-white h-full">
           <Outlet />
 
           </div>

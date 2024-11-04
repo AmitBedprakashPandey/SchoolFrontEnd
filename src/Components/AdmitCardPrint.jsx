@@ -8,10 +8,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import ReactToPrint from "react-to-print";
-import { AllTemplateBySchoolStatus } from "../Redux/Slice/TemplateSlice";
+import { getAdmitCardTemplate } from "../Redux/Slice/AdmitCardTemplate";
 import "./print.css";
 
-export default function PrintPage() {
+export default function AdmitCardPrint() {
   const data = useLocation();
   const [template, setTemplate] = useState("");
   const [template2, setTemplate2] = useState("");
@@ -20,10 +20,10 @@ export default function PrintPage() {
   const dispatch = useDispatch();
   const refs = useRef([]);
   const refBulk = useRef();
-  let cardsPerPage = temp2 && temp ? 5 : 10;
+  let cardsPerPage = temp2 && temp ? 4 : 4;
 
   useEffect(() => {
-    dispatch(AllTemplateBySchoolStatus(localStorage.getItem("schoolid"))).then(
+    dispatch(getAdmitCardTemplate(localStorage.getItem("schoolid"))).then(
       (doc) => {
         setTemp(doc.payload[0]?.tempimage);
         setTemplate(doc.payload[0]?.temp);
@@ -63,6 +63,16 @@ export default function PrintPage() {
       "${dob}",
       moment(data?.dob).format("DD/MM/YYYY")
     );
+    
+    modifiedTemplate = modifiedTemplate.replace(
+      "${photonumber}",
+      data?.photonumber
+    );
+    modifiedTemplate = modifiedTemplate.replace(
+      "${examination}",
+      data?.examination
+    );
+
     modifiedTemplate = modifiedTemplate.replace("${mobile}", data?.mobile);
     modifiedTemplate = modifiedTemplate.replace("${address}", data?.address);
     return modifiedTemplate;
@@ -127,7 +137,7 @@ export default function PrintPage() {
         style={{ pageBreakAfter: "always" }}
         ref={refBulk}
       >
-        <div className="relative grid gap-3 portrait:grid-cols-2 landscape:grid-cols-5 border-2 print:border-none border-black">
+        <div className="relative grid gap-3 portrait:grid-cols-1 landscape:grid-cols-2 border-2 print:border-none border-black">
           {data.state.student.map((item, index) => (
             <div className="flex flex-col">
               <div
@@ -155,6 +165,7 @@ export default function PrintPage() {
   useEffect(() => {
     BulkPrint();
   }, [data]);
+
   const printHandler = () => {
     console.log(data);
   };
@@ -212,11 +223,11 @@ export default function PrintPage() {
         <React.Fragment key={pageIndex}>
           {/* <span className="page-number border border-black h-10 w-15 rounded-full">{pageIndex + 1}</span> */}
           <div
-            className="A4Page  relative px-5 "
+            className="A4Page relative px-5"
             style={{ pageBreakAfter: "always" }}
             ref={(el) => (refs.current[pageIndex] = el)}
           >
-            <div className="relative grid gap-3 portrait:grid-cols-2 landscape:grid-cols-5 border-2 print:border-none border-black">
+            <div className="relative grid grid-cols-1">
               {data.state.student
                 .slice(pageIndex * cardsPerPage, (pageIndex + 1) * cardsPerPage)
                 .map((item, index) => (

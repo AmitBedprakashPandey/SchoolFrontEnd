@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AllClassBySchoolStatus } from "../Redux/Slice/ClassSlice";
 import { createIcard, updateIcard } from "../Redux/Slice/IcardSlice";
 import { AllSectionBySchoolStatus } from "../Redux/Slice/SectionSlice";
+import { getPhotoNumberBySchoolId,updatePhotoNumber} from "../Redux/Slice/PhotoNumberSlice";
 import No_Image from "./Assets/Image/NO_IMAGE.jpg";
 import Loading from "./Loading";
 
@@ -54,6 +55,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
   const [aspectRatio, setAspectRatio] = useState();
   const disptch = useDispatch();
   const { Classs } = useSelector((state) => state.Class);
+  const { PhotoNumber,Numbers } = useSelector((state) => state.PhotoNumber);
   const { Sections } = useSelector((state) => state.Section);
   const formDataHandler = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -62,8 +64,10 @@ export default function ICardForm({ item, label, visbile, disble }) {
   useLayoutEffect(() => {
     disptch(AllClassBySchoolStatus(localStorage.getItem("schoolid")));
     disptch(AllSectionBySchoolStatus(localStorage.getItem("schoolid")));
+    disptch(getPhotoNumberBySchoolId(localStorage.getItem("schoolid")));
   }, [disptch]);
 
+  
   useLayoutEffect(() => {
     if (label === "u" && item) {
       setFormData(item);
@@ -81,6 +85,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
       setSelectedClass("");
       setSelectedSection("");
       setFormData(formData);
+      setFormData({...formData,number:Numbers});
     }
   }, [label, item]);
 
@@ -192,7 +197,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
 
   const onSave = () => {
     disptch(
-      createIcard({ ...formData, schoolid: localStorage.getItem("schoolid") })
+      createIcard({ ...formData, schoolid: localStorage.getItem("schoolid"),number:Numbers})
     ).then((doc) => {
       if (doc.payload?.response?.status !== 302) {
         visbile();
@@ -200,6 +205,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
       if (doc.payload.response?.data.error) {
         showErrorToast(doc.payload.response?.data.error);
       }
+      disptch(updatePhotoNumber(PhotoNumber));
     });
   };
 
@@ -463,6 +469,14 @@ export default function ICardForm({ item, label, visbile, disble }) {
             />
           </div>
           <div className="w-full  flex items-center my-1">
+          <label
+              htmlFor="number-input"
+              className="font-semibold w-28 text-start text-nowrap"
+            >
+              Series no : { Numbers || "-"}
+            </label>
+          </div>
+          <div className="w-full  flex items-center my-1">
             <label
               htmlFor="number-input"
               className="font-semibold w-28 text-start"
@@ -626,14 +640,15 @@ export default function ICardForm({ item, label, visbile, disble }) {
               label="save"
               icon={<PiCheck size={20} />}
               disabled={
-                formData.name &&
+                imageData && 
                 selectedClass &&
-                selectedSection &&
-                date &&
-                formData.mobile
-                  ? false
-                  : true
+                selectedSection
               }
+                // formData.name &&
+                // formData.mobile
+                //   ? false
+                //   : true
+                // date &&
               loading={loading}
               onClick={confirm1}
               className="bg-green-600 hover:bg-green-700 text-white py-3 px-36

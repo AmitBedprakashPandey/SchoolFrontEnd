@@ -23,7 +23,7 @@ import ICardForm from "../../ICardForm";
 import { InputSwitch } from "primereact/inputswitch";
 import { Checkbox } from "primereact/checkbox";
 import { Toast } from "primereact/toast";
-export default function Teacher({}) {
+export default function AdmitCard({}) {
   const dispatch = useDispatch();
   const toast = useRef(null);
   const [selectedProducts, setSelectedProducts] = useState([]);
@@ -98,7 +98,7 @@ export default function Teacher({}) {
   };
 
   const handlePrint = () => {
-    navigate("/print", { state: { student: selectedProducts } });
+    navigate("/admitcardprint", { state: { student: selectedProducts } });
   };
 
   const renderHeader = () => {
@@ -114,11 +114,11 @@ export default function Teacher({}) {
           />
         </span>
 
-        <Button
+        {/* <Button
           label="Bulk student upload "
           onClick={() => setVisible2(true)}
           className="bg-blue-600 hover:bg-blue-700 duration-200 text-white px-5"
-        />
+        /> */}
         <Button
           label={`Print ICard's (${selectedProducts.length})`}
           onClick={handlePrint}
@@ -127,14 +127,14 @@ export default function Teacher({}) {
           className="bg-blue-600 hover:bg-blue-700 duration-200 text-white px-5"
         />
 
-        <Button
+        {/* <Button
           onClick={() => {
             setLable("s");
             setVisible(true);
           }}
           label="Create Student"
           className="bg-blue-600 hover:bg-blue-700 duration-200 text-white px-5"
-        />
+        /> */}
       </div>
     );
   };
@@ -413,7 +413,7 @@ export default function Teacher({}) {
           rows={5}
           footer={footer}
           size="small"
-          // loading={loading}
+          loading={loading}
           dataKey="_id"
           filters={filters}
           filterDisplay="row"
@@ -426,7 +426,7 @@ export default function Teacher({}) {
           selectionMode="checkbox"
           selection={selectedProducts}
           onSelectionChange={(e) => setSelectedProducts(e.value)}
-        >
+        >photonumber
           <Column
             // filter
             selectionMode="multiple"
@@ -443,6 +443,18 @@ export default function Teacher({}) {
             bodyClassName="py-4"
             className="text-xs flex items-center"
           ></Column>
+          <Column
+            field="photonumber"
+            header="PH NO."
+            filter
+            showFilterMenu={false}
+            filterPlaceholder="Search"
+            style={{ minWidth: "5rem", maxWidth: "4rem" }}
+            bodyClassName="h-full text-center"
+            filterHeaderClassName="p-0"
+            headerClassName="text-xs p-0 pl-0"
+            className="text-xs"
+          />
           <Column
             field="admission_id"
             header="Admi. No."

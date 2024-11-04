@@ -5,6 +5,7 @@ import LoginPage from "./Components/LoginPage";
 import Home from "./Components/Home";
 import ICard from "./Components/ICard";
 import PrintPage from "./Components/PrintPage";
+import AdmitCardPrint from "./Components/AdmitCardPrint";
 import BulkExcelUploadForm from "./Components/BulkExcelUploadForm";
 import ImageCropper from "./Components/ImageCropper";
 import Admin from "./Components/Admin/AdminHome";
@@ -19,6 +20,7 @@ import PartyICard from "./Components/Party/ICard";
 import ImageCropTest from "./Components/ImageCropTest";
 import PrintedICards from "./Components/Admin/School/PrindedIcards";
 import DeActiveWithoutImage from "./Components/Admin/School/DeActiveWithoutImage";
+import AdmitCard from "./Components/Admin/School/AdmitCard";
 function App() {
   return (
     <>
@@ -28,6 +30,7 @@ function App() {
         <Route path="/test" element={<ImageCropTest />} />
         <Route path="/crop" element={<ImageCropper />} />
         <Route path="/print" element={<PrintPage />} />
+        <Route path="/admitcardprint" element={<AdmitCardPrint />} />
         <Route path="/icard" element={<ICard />} />
         <Route path="/bulk" element={<BulkExcelUploadForm />} />
         <Route path="/adminlogin" element={<AdminLogin />} />
@@ -37,6 +40,7 @@ function App() {
           <Route path="section" element={<Section />} />
           <Route path="teacher" element={<Teacher />} />
           <Route path="student" element={<Students />} />
+          <Route path="admitcard" element={<AdmitCard />} />
           <Route path="printed" element={<PrintedICards />} />
           <Route path="deactivewithoutimage" element={<DeActiveWithoutImage />} />
         </Route>
