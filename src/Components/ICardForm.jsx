@@ -642,7 +642,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
               disabled={
                 imageData && 
                 selectedClass &&
-                selectedSection
+                selectedSection ? false : true
               }
                 // formData.name &&
                 // formData.mobile

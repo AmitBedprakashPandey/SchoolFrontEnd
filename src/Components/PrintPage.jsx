@@ -118,6 +118,7 @@ export default function PrintPage() {
     setFirst(event.first);
     setRows(event.rows);
     setPage(event.page);
+    
   };
 
   const BulkPrint = () => {
