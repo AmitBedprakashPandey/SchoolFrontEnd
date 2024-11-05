@@ -1,3 +1,44 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.p-dropdown-item{
+    padding: 5px 10px;
+}
+
+.p-dropdown-item:hover{
+    background-color: #5AB2FF;
+}
+.p-dropdown-label{
+    font-size: 12px;
+    padding: 8px 10px;    
+}
+.p-dropdown > .p-dropdown-trigger{
+width: 2rem;
+}
+.p-dropdown-trigger > .p-dropdown-trigger-icon{
+    font-size: 8px;
+    width: 10px;    
+}
+
+.p-calendar{
+}
+.p-calendar > .p-inputtext{
+        padding: 8px 10px;
+}
+.p-calendar > .p-inputtext::placeholder{
+    font-size: 12px;    
+}
+.p-calendar > .p-datepicker-trigger{
+    width: 2rem;    
+}
+
+.p-checkbox,.p-checkbox-box{
+    width: 20px;
+    height: 20px;    
+}
+.p-checkbox.p-highlight .p-checkbox-box{
+    background-color: #5AB2FF;
+    border-color: #5AB2FF;
+}

@@ -1,4 +1,4 @@
-.page-number {
+/* .page-number {
   position: absolute;
   border: 1px solid;
   border-radius: 100%;
@@ -9,37 +9,44 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
+} */
 
-@media screen {
+/* @media screen {
   .page-number {
     right: 0;
     top: 0;
   }
+} */
+.A4Page {
+  width: 29.7cm;
 }
 
-@page {
-  padding: 15px;
+.icardSize {
+  height: 3.375in;
+  width: 2.125in;
 }
-
-
+.admitCardSize {
+  width: 28cm;
+  
+  margin: 10px 0 ;
+}
 @media print {
   @page {
-    padding: 15px;
-    size: A4;
-    margin: 0.5cm; 
+    /* size: A4; */
+    margin: 0.2cm;
+
     /* Add page numbers to the footer */
-     @bottom-center {
+    @bottom-center {
       content: counter(page);
     }
   }
 
-  .A4Page {
-    padding: 15px;
+  /* .A4Page {
+    padding: 0px;
     page-break-after: always;
-  }
+  } */
 
-  .page-number {
+  /* .page-number {
     position: absolute;
     bottom: -5mm;
     right: 5mm;
@@ -60,5 +67,5 @@
   .print-layout.landscape {
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(2, auto);
-  }
+  } */
 }

@@ -79,13 +79,13 @@ export default function ICardForm({ item, label, visbile, disble }) {
       setImageData(item.image);
       setFatherImage(item.fatherimage);
       setMotherImage(item.motherimage);
-      setGuardianImage(item.guardianimage);
+      setGuardianImage(item.guardianimage);      
     }
     if (label === "s") {
       setSelectedClass("");
       setSelectedSection("");
       setFormData(formData);
-      setFormData({...formData,number:Numbers});
+      setFormData({...formData,photonumber:Numbers});
     }
   }, [label, item]);
 
@@ -322,7 +322,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
 
   return (
     <>
-      <ConfirmDialog />
+      {/* <ConfirmDialog /> */}
       {/* <ConfirmPopup /> */}
       <Toast ref={toast} />
       {loading && <Loading />}
@@ -331,7 +331,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
         header="Enter Parents Details"
         onHide={() => setVisbiles(false)}
       >
-        <form>
+        <form className="text-xs">
           <div>
             <label htmlFor="fathername" className="capitalize font-medium">
               Upload father Photo
@@ -344,7 +344,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
                 accept="image/*"
                 name="fatherimage"
                 onChange={fatherImageHandler}
-                className="w-full h-12"
+                className="w-full h-8"
               />
             </span>
           </div>
@@ -355,7 +355,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
               name="mothername"
               value={formData?.mothername}
               onChange={formDataHandler}
-              className="border border-gray-300 w-full h-12 pl-3"
+              className="border border-gray-300 w-full h-8 pl-3"
             />
             <label htmlFor="mothername">Enter Mother Name</label>
           </span>
@@ -370,7 +370,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
                 name="motherimage"
                 accept="image/*"
                 onChange={motherImageHandler}
-                className="h-12 w-full"
+                className="h-8 w-full"
               />
             </span>
           </div>
@@ -381,7 +381,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
               name="guardianname"
               value={formData?.guardianname}
               onChange={formDataHandler}
-              className="border border-gray-300 w-full h-12 pl-3"
+              className="border border-gray-300 w-full h-8 pl-3"
             />
             <label htmlFor="mothername">Enter Guardian Name</label>
           </span>
@@ -397,7 +397,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
                 name="motherimage"
                 accept="image/*"
                 onChange={gaurdianImageHandler}
-                className="h-12 w-full"
+                className="h-8 w-full"
               />
             </span>
           </div>
@@ -408,7 +408,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
               name="transport"
               value={formData?.transport}
               onChange={formDataHandler}
-              className="border border-gray-300 w-full h-12 pl-3"
+              className="border border-gray-300 w-full h-8 pl-3"
             />
             <label htmlFor="trasnport">Enter Trasnport Mode</label>
           </span>
@@ -425,6 +425,9 @@ export default function ICardForm({ item, label, visbile, disble }) {
             <label htmlFor="remark">Remark</label>
           </span>
         </form>
+        <div className="flex justify-center w-full mt-5">
+          <Button onClick={()=>setVisbiles(false)} className="bg-blue-600 px-5 py-2 text-white" label="Done"/>
+        </div>
       </Dialog>
       <Dialog
         className="w-[95vw] md:w-[450px] h-[95vh] mx-2"
@@ -438,10 +441,10 @@ export default function ICardForm({ item, label, visbile, disble }) {
         <ImageCropper image={image} onCropDone={onCropDone} />
       </Dialog>
       <div className="bg-white">
-        <form className="flex flex-col items-center">
+        <form className="flex flex-col items-center text-xs">
           <div className="flex justify-between w-full">
             <div className="relative my-3">
-              <div className="w-36 h-36 border-2 border-black rounded-full overflow-hidden">
+              <div className="w-20 h-20 border-2 border-black rounded-full overflow-hidden">
                 <img
                   className="bg-center w-full h-full"
                   src={imageData || No_Image}
@@ -456,24 +459,26 @@ export default function ICardForm({ item, label, visbile, disble }) {
               />
               <label
                 htmlFor="inpfile"
-                className=" border-gray-500 border-2 rounded-full w-10 h-10 flex justify-center items-center font-bold absolute -bottom-2 -right-3 bg-blue-500"
+                className=" border-gray-500 border-2 rounded-full w-6 h-6 flex justify-center items-center font-bold absolute bottom-0 right-0 bg-blue-500"
               >
-                <BiCamera color="#fff" size={30} />
+                <BiCamera color="#fff" size={25} />
               </label>
             </div>
             <Button
               type="button"
               onClick={() => setVisbiles(true)}
-              label={<BiMenu />}
-              className="w-10 h-10 p-3 border border-gray-500"
+              // label={<BiMenu />}
+              label="Add More"
+              className="w- h-8 p-2 text-xs hover:bg-blue-600 hover:text-white duration-200 border border-blue-600"
             />
           </div>
           <div className="w-full  flex items-center my-1">
           <label
               htmlFor="number-input"
-              className="font-semibold w-28 text-start text-nowrap"
+              className="font-semibold w-28 text-start text-nowrap text-xs"
             >
-              Series no : { Numbers || "-"}
+              Series no : {label === "u" ? formData?.photonumber : Numbers}
+
             </label>
           </div>
           <div className="w-full  flex items-center my-1">
@@ -491,7 +496,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
               placeholder="Enter Admission Number"
               inputClassName="pl-2"
               useGrouping={false}
-              className="pl-2 border-gray-300 border mx-3 w-full rounded-md h-12"
+              className="pl-2 border-gray-300 border mx-3 w-full rounded-md h-8"
             />
           </div>
           <div className="w-full  flex items-center my-1">
@@ -504,7 +509,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
               useGrouping={false}
               placeholder="Enter Roll Number"
               inputClassName="pl-2"
-              className="pl-2 border-gray-300 border h-12 mx-3 w-full rounded-md"
+              className="pl-2 border-gray-300 border h-8 mx-3 w-full rounded-md"
             />
           </div>
           <div className="w-full flex items-center my-1">
@@ -519,7 +524,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
               required
               value={formData.name}
               onChange={formDataHandler}
-              className="border-gray-300 border mx-3 py-2 px-2 h-12 w-full rounded-md"
+              className="border-gray-300 border mx-3 py-2 px-2 h-8 w-full rounded-md"
             />
           </div>
           <div className="w-full flex items-center my-1">
@@ -534,7 +539,9 @@ export default function ICardForm({ item, label, visbile, disble }) {
               disabled={disble}
               optionValue="class"
               placeholder="Select Class"
-              className="capitalize border-gray-300 border mx-3 h-12 w-full rounded-md"
+              
+              panelClassName="text-xs"
+              className="placeholder:text-xs capitalize border-gray-300 border text-xs mx-3 h-8 w-full rounded-md"
             />
           </div>
           <div className="w-full flex items-center my-1">
@@ -549,7 +556,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
               disabled={disble}
               optionValue="section"
               placeholder="Select Section"
-              className=" capitalize border-gray-300 border mx-3 h-12 w-full rounded-md"
+              className=" capitalize border-gray-300 border mx-3 h-8 w-full rounded-md"
             />
           </div>
 
@@ -564,8 +571,8 @@ export default function ICardForm({ item, label, visbile, disble }) {
               showIcon
               disabled={disble}
               placeholder="Enter date of birth"
-              inputClassName="pl-3"
-              className="border-gray-300 border mx-3 h-12 w-full rounded-md"
+              inputClassName="pl-3 text-xs placeholder:text-xs"
+              className="border-gray-300 border mx-3 h-8 w-full rounded-md"
             />
           </div>
           <div className="w-full flex items-center my-1">
@@ -578,11 +585,11 @@ export default function ICardForm({ item, label, visbile, disble }) {
               onChange={formDataHandler}
               disabled={disble}
               placeholder="Enter Father Name"
-              className="border-gray-300 border mx-3 py-2 px-2 h-12 w-full rounded-md"
+              className="border-gray-300 border mx-3 py-2 px-2 h-8 w-full rounded-md"
             />
           </div>
           <div className="w-full flex items-center my-1">
-            <label className="font-semibold w-28 text-start">
+            <label className="font-semibold text-start">
               Contact:<strong className="text-red-500">*</strong>
             </label>{" "}
             <InputNumber
@@ -592,9 +599,9 @@ export default function ICardForm({ item, label, visbile, disble }) {
               onValueChange={formDataHandler}
               disabled={disble}
               placeholder="Enter Contact Number"
-              inputClassName="pl-2"
               useGrouping={false}
-              className="border-gray-300 border mx-3 h-12 w-full rounded-md"
+              className="w-full"
+              inputClassName="ml-6 mr-3 pl-2 text-xs border-gray-300 placeholder:text-xs border h-8 w-full rounded-md"
             />
           </div>
 
@@ -608,33 +615,33 @@ export default function ICardForm({ item, label, visbile, disble }) {
               value={formData.address}
               onChange={formDataHandler}
               placeholder="Enter Address"
-              className="border-gray-300 border mx-3 py-2 px-2 h-12 w-full rounded-md"
+              className="border-gray-300 border mx-3 py-2 px-2 h-8 w-full rounded-md"
             />
           </div>
-          <div className="flex">
-            <div className="flex items-center my-1 gap-3">
+          <div className="flex gap-3 my-2">
+            <div className="flex items-center  gap-2">
               <Checkbox
                 onChange={(e) => setChecked(e.checked)}
                 checked={checked}
                 className="border-gray-400 border rounded-md"
               ></Checkbox>
-              <label htmlFor="checkstatus" className="font-bold w-28">
+              <label htmlFor="checkstatus" className="font-bold">
                 Active
               </label>
             </div>
-            <div className="flex items-center my-1 gap-3">
+            <div className="flex items-center gap-2">
               <Checkbox
                 onChange={(e) => setCheckedPrint(e.checked)}
                 checked={checkedPrint}
                 className="border-gray-400 border rounded-md"
               ></Checkbox>
-              <label htmlFor="checkstatus" className="font-bold w-28">
+              <label htmlFor="checkstatus" className="font-bold">
                 Printed
               </label>
             </div>
           </div>
         </form>
-        <div className="flex flex-col justify-center">
+        <div className="flex justify-center">
           {label === "s" ? (
             <Button
               label="save"
@@ -651,8 +658,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
                 // date &&
               loading={loading}
               onClick={confirm1}
-              className="bg-green-600 hover:bg-green-700 text-white py-3 px-36
-               my-2 disabled:bg-green-800"
+              className="text-xs gap-2 px-5 py-2 bg-green-600 hover:bg-green-700 text-white my-2 disabled:bg-green-800"
             ></Button>
           ) : (
             <Button
@@ -661,7 +667,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
               onClick={confirm2}
               disabled={loading}
               loading={loading}
-              className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 duration-200 text-white py-3 px-32 my-2"
+              className="text-xs gap-2 px-5 py-2 bg-green-600 hover:bg-green-700 text-white my-2 disabled:bg-green-800"
             ></Button>
           )}
         </div>

@@ -82,7 +82,7 @@ export default function AdminHome(params) {
       icon: <PiXDuotone size={20} />,
     },{
       key: "6",
-      label: "Admin Card",
+      label: "Admit Card",
       // icon: "pi pi-users",
       url: "admitcard",
       icon: <PiCardsDuotone size={20} />,

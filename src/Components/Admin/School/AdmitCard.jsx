@@ -43,8 +43,7 @@ export default function AdmitCard({}) {
 
   useEffect(() => {
     if (!localStorage.getItem("Admintoken")) {
-      return navigate("/adminlogin");
-    }
+      return navigate("/adminlogin");    }
 
     dispatch(AllClass(localStorage.getItem("schoolid")));
     dispatch(AllSection(localStorage.getItem("schoolid")));

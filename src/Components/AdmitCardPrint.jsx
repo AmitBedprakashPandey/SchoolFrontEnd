@@ -20,7 +20,7 @@ export default function AdmitCardPrint() {
   const dispatch = useDispatch();
   const refs = useRef([]);
   const refBulk = useRef();
-  let cardsPerPage = temp2 && temp ? 4 : 4;
+  let cardsPerPage = temp2 && temp ? 3 : 3;
 
   useEffect(() => {
     dispatch(getAdmitCardTemplate(localStorage.getItem("schoolid"))).then(
@@ -137,24 +137,14 @@ export default function AdmitCardPrint() {
         style={{ pageBreakAfter: "always" }}
         ref={refBulk}
       >
-        <div className="relative grid gap-3 portrait:grid-cols-1 landscape:grid-cols-2 border-2 print:border-none border-black">
+        <div className="relative grid portrait:grid-cols-1 border-2 print:border-none border-black">
           {data.state.student.map((item, index) => (
-            <div className="flex flex-col">
+            <div className="flex gap-3 items-center">
               <div
                 key={index}
-                className="my-2"
+                className="admitCardSize"
                 dangerouslySetInnerHTML={{ __html: renderTemplate(item) }}
-              />
-              {temp2 && (
-                <>
-                  <Divider className="border my-3" />
-                  <div
-                    key={index}
-                    className="my-2"
-                    dangerouslySetInnerHTML={{ __html: renderTemplate2(item) }}
-                  />
-                </>
-              )}
+              />              
             </div>
           ))}
         </div>
@@ -227,28 +217,16 @@ export default function AdmitCardPrint() {
             style={{ pageBreakAfter: "always" }}
             ref={(el) => (refs.current[pageIndex] = el)}
           >
-            <div className="relative grid grid-cols-1">
+            <div className="relative grid grid-cols-1 gap-2 ">
               {data.state.student
                 .slice(pageIndex * cardsPerPage, (pageIndex + 1) * cardsPerPage)
                 .map((item, index) => (
-                  <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-2">
                     <div
                       key={index}
-                      className="my-2"
+                      className="admitCardSize"
                       dangerouslySetInnerHTML={{ __html: renderTemplate(item) }}
-                    />
-                    {temp2 && (
-                      <>
-                        <Divider className="border my-3" />
-                        <div
-                          key={index}
-                          className="my-2"
-                          dangerouslySetInnerHTML={{
-                            __html: renderTemplate2(item),
-                          }}
-                        />
-                      </>
-                    )}
+                    />                   
                   </div>
                 ))}
             </div>

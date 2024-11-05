@@ -161,8 +161,8 @@ export default function Teacher({ school }) {
         <DataTable
           size="small"
           value={Teacher}
-          paginator
-          rows={10}
+          scrollable
+          scrollHeight="80vh"
           footer={footer}
           dataKey="id"
           filters={filters}

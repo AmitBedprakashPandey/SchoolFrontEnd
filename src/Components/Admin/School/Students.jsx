@@ -185,20 +185,22 @@ export default function Teacher({}) {
   };
 
   const header = renderHeader();
-  const footer = `In total there are ${
-    filterStudent ? filterStudent.length : 0
-  } Student's.`;
+  const footer = (
+    <div className="text-xs">
+      Total Student : {filterStudent ? filterStudent.length : 0}
+    </div>
+  );
 
   const updatetemplete = (event) => {
     return (
-      <div className="">
+      <div className="py-1.5">
         <button
           onClick={() => {
             setSelectTeacher(event);
             setVisible(true);
             setLable("u");
           }}
-          className="bg-blue-600 hover:bg-blue-700 duration-200 text-white p-2 rounded-full"
+          className="bg-blue-600 hover:bg-blue-700 duration-200 text-white p-1 rounded-full"
         >
           <BiEdit size={20} />
         </button>
@@ -390,7 +392,7 @@ export default function Teacher({}) {
         header={label === "s" ? "Create Student" : "Update Student"}
         visible={visible}
         onHide={() => setVisible(false)}
-        style={{ width: "50vh" }}
+        style={{ width: "25vw" }}
       >
         <ICardForm
           item={selectTeacher}
@@ -409,11 +411,11 @@ export default function Teacher({}) {
       <div className="card">
         <DataTable
           value={filterStudent}
-          paginator
-          rows={5}
           footer={footer}
           size="small"
-          // loading={loading}
+          scrollable
+          scrollHeight="80vh"
+          loading={loading}
           dataKey="_id"
           filters={filters}
           filterDisplay="row"

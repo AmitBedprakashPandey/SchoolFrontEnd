@@ -22,6 +22,7 @@ export const updatePhotoNumber = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const res = await axios.put(`${url}`, data);
+      
       return res.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -61,12 +62,8 @@ export const SectionSlice = createSlice({
       })
       .addCase(updatePhotoNumber.fulfilled, (state, action) => {
         state.error = null;
-        const index = state.PhotoNumber.findIndex(
-          (PhotoNumber) => PhotoNumber._id === action.payload._id
-        );
-        if (index !== -1) {
-          state.PhotoNumber[index] = action.payload;
-        }
+        state.PhotoNumber = action.payload
+        
         state.loading = false;
       })
       .addCase(updatePhotoNumber.rejected, (state, action) => {

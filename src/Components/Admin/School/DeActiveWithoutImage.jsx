@@ -181,9 +181,8 @@ export default function DeActiveWithoutImage({}) {
   };
 
   const header = renderHeader();
-  const footer = `In total there are ${
-    filterStudent ? filterStudent.length : 0
-  } Student's.`;
+  const footer = <div className="text-xs">Total Student's : {filterStudent ? filterStudent.length : 0};
+  </div>
   const updatetemplete = (event) => {
     return (
       <button
@@ -382,8 +381,8 @@ export default function DeActiveWithoutImage({}) {
       <div className="card">
         <DataTable
           value={filterStudent}
-          paginator
-          rows={10}
+             scrollable
+          scrollHeight="80vh"
           footer={footer}
           size="small"
           loading={loading}

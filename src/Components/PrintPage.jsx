@@ -43,7 +43,7 @@ export default function PrintPage() {
 
     modifiedTemplate = modifiedTemplate.replace(
       "${mothername}",
-      data?.mothername
+      data?.mothername || "-"
     );
     modifiedTemplate = modifiedTemplate.replace(
       "${admission_id}",
@@ -61,7 +61,7 @@ export default function PrintPage() {
     );
     modifiedTemplate = modifiedTemplate.replace(
       "${dob}",
-      moment(data?.dob).format("DD/MM/YYYY")
+      moment(data?.dob).format("DD/MM/YYYY") || "-"
     );
     modifiedTemplate = modifiedTemplate.replace("${mobile}", data?.mobile);
     modifiedTemplate = modifiedTemplate.replace("${address}", data?.address);
@@ -128,17 +128,17 @@ export default function PrintPage() {
         style={{ pageBreakAfter: "always" }}
         ref={refBulk}
       >
-        <div className="relative grid gap-3 portrait:grid-cols-2 landscape:grid-cols-5 border-2 print:border-none border-black">
+        <div className="relative grid portrait:grid-cols-3 landscape:grid-cols-5 border-2 print:border-none border-black">
           {data.state.student.map((item, index) => (
-            <div className="flex flex-col">
+            <div className="flex items-center my-1.5">
               <div
                 key={index}
-                className="my-2"
+                className=""
                 dangerouslySetInnerHTML={{ __html: renderTemplate(item) }}
               />
               {temp2 && (
                 <>
-                  <Divider className="border my-3" />
+                  <Divider className="border" />
                   <div
                     key={index}
                     className="my-2"
@@ -179,7 +179,7 @@ export default function PrintPage() {
           trigger={() => (
             <Button
               onClick={printHandler}
-              className="py-2 px-10 text-xs bg-cyan-500 text-white"
+              className="py-2 px-10 text-xs bg-blue-600 text-white"
             >
               Print
             </Button>
@@ -200,31 +200,33 @@ export default function PrintPage() {
           trigger={() => (
             <Button
               onClick={BulkPrint}
-              className="py-2 px-10 text-xs bg-cyan-500 text-white"
+              className="py-2 px-10 text-xs bg-blue-600 text-white"
             >
-              Print
+              Bulk Print
             </Button>
           )}
           content={() => refBulk.current} // Assuming only one page is printed at a time
         />
       </div>
-      {<BulkPrint />}
+      {/* {<BulkPrint />} */}
+      <div className="" >
+
+      
       {Array.from({ length: totalPages }, (_, pageIndex) => (
         <React.Fragment key={pageIndex}>
-          {/* <span className="page-number border border-black h-10 w-15 rounded-full">{pageIndex + 1}</span> */}
           <div
-            className="A4Page  relative px-5 "
+            className="A4Page relative"
             style={{ pageBreakAfter: "always" }}
             ref={(el) => (refs.current[pageIndex] = el)}
           >
-            <div className="relative grid gap-3 portrait:grid-cols-2 landscape:grid-cols-5 border-2 print:border-none border-black">
+            <div className="relative grid grid-cols-5 gap-2 ">
               {data.state.student
                 .slice(pageIndex * cardsPerPage, (pageIndex + 1) * cardsPerPage)
                 .map((item, index) => (
-                  <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-2">
                     <div
                       key={index}
-                      className="my-2"
+                      className="icardSize border border-red-500"
                       dangerouslySetInnerHTML={{ __html: renderTemplate(item) }}
                     />
                     {temp2 && (
@@ -232,7 +234,7 @@ export default function PrintPage() {
                         <Divider className="border my-3" />
                         <div
                           key={index}
-                          className="my-2"
+                          className="icardSize"
                           dangerouslySetInnerHTML={{
                             __html: renderTemplate2(item),
                           }}
@@ -242,11 +244,11 @@ export default function PrintPage() {
                   </div>
                 ))}
             </div>
-            {/* <span className="page-number">{pageIndex + 1}</span> */}
           </div>
           {pageIndex !== totalPages - 1 && <div className="page-break"></div>}
         </React.Fragment>
       ))}
+      </div>
     </>
   );
 }
