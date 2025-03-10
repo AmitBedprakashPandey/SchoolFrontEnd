@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { FilterMatchMode } from "primereact/api";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -26,16 +26,17 @@ export default function Teacher({ school }) {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!localStorage.getItem("Admintoken")) {
       return navigate("/adminlogin");
     }
-    if (!Teacher?.length >= 0) {
-      dispatch(getAllTeacherBySchool(localStorage.getItem("schoolid")));
-      dispatch(AllClassBySchoolStatus(localStorage.getItem("schoolid")));
-      dispatch(AllSectionBySchoolStatus(localStorage.getItem("schoolid")));
-    }
-  }, [dispatch, navigate]);
+  }, [navigate]);
+
+  useEffect(() => {
+    dispatch(getAllTeacherBySchool(localStorage.getItem("schoolid")));
+    dispatch(AllClassBySchoolStatus(localStorage.getItem("schoolid")));
+    dispatch(AllSectionBySchoolStatus(localStorage.getItem("schoolid")));
+  }, [dispatch]);
 
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -129,11 +130,8 @@ export default function Teacher({ school }) {
   };
 
   const header = renderHeader();
-  const footer = (
-    <div className="text-xs capitalize">
-      In total there are {Teacher ? Teacher.length : 0} Teacher's.
-    </div>
-  );
+  const footer = (<div className="text-xs capitalize">In total there are {Teacher ? Teacher.length : 0} Teacher's.</div>);
+
   return (
     <>
       <Dialog
@@ -156,7 +154,7 @@ export default function Teacher({ school }) {
       >
         <TeacherLoginUpdate data={selectTeacher} />
       </Dialog>
-      {loading && <Loading />}
+      {/* {loading && <Loading />} */}
       <div className="card">
         <DataTable
           size="small"

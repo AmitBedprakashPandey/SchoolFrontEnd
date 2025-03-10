@@ -13,17 +13,14 @@ import { BiEdit } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { AllClass } from "../../../Redux/Slice/ClassSlice";
-import {
-  fetchAllIcards,
-  updateManyIcards,
-} from "../../../Redux/Slice/IcardSlice";
+import { fetchAllIcards, updateManyIcards} from "../../../Redux/Slice/IcardSlice";
 import { AllSection } from "../../../Redux/Slice/SectionSlice";
 import BulkUpload from "../../BulkExcelUploadForm";
 import ICardForm from "../../ICardForm";
 import { InputSwitch } from "primereact/inputswitch";
 import { Checkbox } from "primereact/checkbox";
 import { Toast } from "primereact/toast";
-export default function Teacher({}) {
+export default function Teacher() {
   const dispatch = useDispatch();
   const toast = useRef(null);
   const [selectedProducts, setSelectedProducts] = useState([]);
@@ -36,19 +33,23 @@ export default function Teacher({}) {
   const [visible2, setVisible2] = useState(false);
   const [imageFilterChecked, setImageFilterChecked] = useState(false);
   const [label, setLable] = useState();
+    const currentYear = moment().year();
   const { ICards, loading, message, error } = useSelector(
     (state) => state.Icard
   );
   const navigate = useNavigate();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!localStorage.getItem("Admintoken")) {
       return navigate("/adminlogin");
     }
-
+  }, [navigate]);
+  
+  useLayoutEffect(()=>{
     dispatch(AllClass(localStorage.getItem("schoolid")));
     dispatch(AllSection(localStorage.getItem("schoolid")));
-  }, [dispatch, navigate]);
+  },[dispatch])
+
 
   useLayoutEffect(() => {
     dispatch(fetchAllIcards(localStorage.getItem("schoolid"))).then((doc) =>
@@ -113,7 +114,14 @@ export default function Teacher({}) {
             placeholder="Keyword Search"
           />
         </span>
-
+<div>
+  <label>Session : </label>
+  <select>
+    <option selected disabled >Select Session</option>
+            <option selected={currentYear === currentYear ? true : false} >{currentYear}- {currentYear+1}</option>
+            <option>{currentYear+1}- {currentYear+2}</option>
+  </select>
+</div>
         <Button
           label="Bulk student upload "
           onClick={() => setVisible2(true)}
@@ -174,8 +182,8 @@ export default function Teacher({}) {
 
   const representativesItemTemplate = (option) => {
     return (
-      <div className="flex w-16 h-14 align-items-center gap-2 border">
-        <img alt={"student image"} src={option.image} className="w-24 h-24" />
+      <div className="flex w-10 h-10 align-items-center gap-2 border">
+        <img alt={"student image"} src={option.image} />
       </div>
     );
   };
@@ -393,6 +401,7 @@ export default function Teacher({}) {
         visible={visible}
         onHide={() => setVisible(false)}
         style={{ width: "25vw" }}
+        draggable={false}
       >
         <ICardForm
           item={selectTeacher}
@@ -405,6 +414,7 @@ export default function Teacher({}) {
         visible={visible2}
         onHide={() => setVisible2(false)}
         style={{ width: "50vh" }}
+        draggable={false}
       >
         <BulkUpload visbile={() => setVisible2(false)} />
       </Dialog>
@@ -415,7 +425,7 @@ export default function Teacher({}) {
           size="small"
           scrollable
           scrollHeight="80vh"
-          loading={loading}
+          // loading={loading}
           dataKey="_id"
           filters={filters}
           filterDisplay="row"
@@ -442,7 +452,7 @@ export default function Teacher({}) {
             body={updatetemplete}
             headerStyle={{ minWidth: "2rem" }}
             headerClassName="text-xs"
-            bodyClassName="py-4"
+            bodyClassName=""
             className="text-xs flex items-center"
           ></Column>
           <Column

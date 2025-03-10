@@ -23,6 +23,8 @@ import ICardForm from "../../ICardForm";
 import { InputSwitch } from "primereact/inputswitch";
 import { Checkbox } from "primereact/checkbox";
 import { Toast } from "primereact/toast";
+import { Image } from "primereact/image";
+import { PiMagnifyingGlass } from "react-icons/pi";
 export default function AdmitCard({}) {
   const dispatch = useDispatch();
   const toast = useRef(null);
@@ -104,13 +106,14 @@ export default function AdmitCard({}) {
     return (
       <div className="flex justify-between">
         <span className="border border-slate-300 rounded-lg flex items-center relative">
-          <i className="pi pi-search absolute right-3" />
           <InputText
+            type="text"
             value={globalFilterValue}
             onChange={onGlobalFilterChange}
-            className="md:py-1 lg:py-2 px-2"
+            className="md:py-1 lg:py-1 px-1.5 placeholder:md:text-xs"
             placeholder="Keyword Search"
           />
+          <PiMagnifyingGlass className="right-3 absolute" />
         </span>
 
         {/* <Button
@@ -123,7 +126,7 @@ export default function AdmitCard({}) {
           onClick={handlePrint}
           // disabled
           disabled={selectedProducts.length >= 1 ? false : true}
-          className="bg-blue-600 hover:bg-blue-700 duration-200 text-white px-5"
+          className="md:text-xs bg-blue-600 hover:bg-blue-700 duration-200 text-white px-2"
         />
 
         {/* <Button
@@ -173,8 +176,8 @@ export default function AdmitCard({}) {
 
   const representativesItemTemplate = (option) => {
     return (
-      <div className="flex w-16 h-14 align-items-center gap-2 border">
-        <img alt={"student image"} src={option.image} className="w-24 h-24" />
+      <div className="flex align-items-center gap-2">
+        <Image preview alt={"student image"} src={option.image} width={30} />
       </div>
     );
   };
@@ -228,10 +231,13 @@ export default function AdmitCard({}) {
 
   const imageFilterHeader = () => {
     return (
+      <div className="flex justify-center">
+
       <InputSwitch
         checked={imageFilterChecked}
         onChange={(e) => setImageFilterChecked(e.value)}
-      />
+        />
+        </div>
     );
   };
 
@@ -255,10 +261,11 @@ export default function AdmitCard({}) {
 
   const printFilterHeader = () => {
     return (
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1">
         <Button
-          label={`Move to Printed (${selectedPrinted.length})`}
-          className="bg-blue-600  w-24 p-2 text-white hover:bg-blue-700 duration-200"
+        disabled={selectedPrinted.length > 0 ? false : true}
+          label={`MoveToPrint (${selectedPrinted.length})`}
+          className="bg-blue-600  w-20 p-0.5 text-white hover:bg-blue-700 duration-200"
           onClick={prindedSubmit}
         />
         <Checkbox
@@ -412,7 +419,7 @@ export default function AdmitCard({}) {
           rows={5}
           footer={footer}
           size="small"
-          loading={loading}
+          // loading={loading}
           dataKey="_id"
           filters={filters}
           filterDisplay="row"
@@ -425,7 +432,7 @@ export default function AdmitCard({}) {
           selectionMode="checkbox"
           selection={selectedProducts}
           onSelectionChange={(e) => setSelectedProducts(e.value)}
-        >photonumber
+        >
           <Column
             // filter
             selectionMode="multiple"
@@ -473,10 +480,11 @@ export default function AdmitCard({}) {
             showFilterMenu={false}
             body={representativesItemTemplate}
             filterElement={imageFilterHeader}
-            bodyClassName="px-0 "
-            filterHeaderClassName="p-0 pl-2 "
-            headerClassName="text-xs text-center pl-3"
-            className="text-xs"
+            bodyClassName="flex justify-center border"
+            filterHeaderClassName="w-16 border"
+            headerClassName="w-16 text-xs text-center pl-3 border"
+            className="w-16"
+            style={{width:80}}
           />
           <Column
             field="name"
@@ -560,14 +568,14 @@ export default function AdmitCard({}) {
             field="print"
             header="Printed"
             showFilterMenu={false}
-            filterMenuStyle={{ width: "10rem" }}
-            style={{ minWidth: "2rem" }}
+            filterMenuStyle={{ width: "0rem" }}
+            style={{ minWidth: "0rem" }}
             filter
             body={printFilterBody}
             filterElement={printFilterHeader}
-            bodyClassName="pl-16 p-0"
-            filterHeaderClassName="p-0 pl-6"
-            headerClassName="text-xs p-0 pl-12"
+            bodyClassName=" p-0 flex justify-center"
+            filterHeaderClassName="p-0 flex justify-center"
+            headerClassName="text-xs p-0 pl-3"
             className="text-xs"
           />
         </DataTable>

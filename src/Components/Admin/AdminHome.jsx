@@ -15,6 +15,7 @@ import {
   PiIdentificationBadgeDuotone,
   PiXDuotone,
   PiCardsDuotone,
+  PiMoneyDuotone,
 } from "react-icons/pi";
 import { verifyExpire } from "../../Redux/Slice/ExpireSlice";
 export default function AdminHome(params) {
@@ -86,7 +87,26 @@ export default function AdminHome(params) {
       // icon: "pi pi-users",
       url: "admitcard",
       icon: <PiCardsDuotone size={20} />,
+    },{
+      key: "7",
+      label: "Set Fees",
+      // icon: "pi pi-users",
+      url: "setfees",
+      icon: <PiMoneyDuotone size={20} />,
+    },{
+      key: "8",
+      label: "Fees Payment",
+      // icon: "pi pi-users",
+      url: "feespayment",
+      icon: <PiMoneyDuotone size={20} />,
     },
+    // {
+    //   key: "8",
+    //   label: "Session Upgrade",
+    //   // icon: "pi pi-users",
+    //   url: "sessionupgrade",
+    //   icon: <PiMoneyDuotone size={20} />,
+    // },
   ];
 
   useEffect(() => {

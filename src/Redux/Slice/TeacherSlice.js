@@ -78,7 +78,6 @@ export const Teacher = createSlice({
       })
       .addCase(getAllTeacherBySchool.rejected, (state, action) => {
         state.loading = false;
-        state.Teacher = [];
         state.error = action.payload;
       })
       .addCase(createTeacher.pending, (state) => {

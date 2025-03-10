@@ -393,7 +393,7 @@ export default function PrintedICards({}) {
           rows={10}
           footer={footer}
           size="small"
-          loading={loading}
+          // loading={loading}
           dataKey="_id"
           filters={filters}
           filterDisplay="row"

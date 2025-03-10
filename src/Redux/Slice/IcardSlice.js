@@ -102,6 +102,19 @@ export const updatePrintStatusMany = createAsyncThunk(
     }
   }
 );
+
+export const SessionUpdate = createAsyncThunk(
+  "icard/Session/Update",
+  async (data, { rejectWithValue }) => {
+    try {
+
+       const res = await axios.put(`${url}/session`, data);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
 export const ICard = createSlice({
   name: "Icard",
   initialState: {
@@ -238,7 +251,28 @@ export const ICard = createSlice({
         state.loading = false;
         state.error = action.payload.error;
         state.message = null;
-      });
+      })
+      .addCase(SessionUpdate.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.message = null;
+      })
+      .addCase(SessionUpdate.fulfilled, (state, action) => {
+        const index = state.ICards.findIndex(
+          (icard) => icard._id === action.payload.data._id
+        );
+        if (index !== -1) {
+          state.ICards[index] = action.payload.data;
+        }
+        state.error = null;
+        state.message = action.payload.message;
+        state.loading = false;
+      })
+      .addCase(SessionUpdate.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload.error;
+        state.message = null;
+      })
   },
 });
 

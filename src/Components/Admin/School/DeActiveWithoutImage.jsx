@@ -385,7 +385,7 @@ export default function DeActiveWithoutImage({}) {
           scrollHeight="80vh"
           footer={footer}
           size="small"
-          loading={loading}
+          // loading={loading}
           dataKey="_id"
           filters={filters}
           filterDisplay="row"

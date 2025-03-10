@@ -12,7 +12,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { AllClassBySchoolStatus } from "../Redux/Slice/ClassSlice";
 import { createIcard, updateIcard } from "../Redux/Slice/IcardSlice";
 import { AllSectionBySchoolStatus } from "../Redux/Slice/SectionSlice";
-import { getPhotoNumberBySchoolId,updatePhotoNumber} from "../Redux/Slice/PhotoNumberSlice";
+import {
+  getPhotoNumberBySchoolId,
+  updatePhotoNumber,
+} from "../Redux/Slice/PhotoNumberSlice";
 import No_Image from "./Assets/Image/NO_IMAGE.jpg";
 import Loading from "./Loading";
 
@@ -22,6 +25,8 @@ import { Toast } from "primereact/toast";
 import { BiCamera, BiMenu } from "react-icons/bi";
 import ImageCropper from "./ImageCropper2";
 import { PiCheck } from "react-icons/pi";
+import moment from "moment/moment";
+import SessionUpgrade from "./Admin/Components/SessionUpgrade";
 // import { Image } from "primereact/image";
 
 export default function ICardForm({ item, label, visbile, disble }) {
@@ -43,7 +48,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
   const [visbileModel, setVisbileModel] = useState(false);
   const [visbiles, setVisbiles] = useState(false);
   const [imageData, setImageData] = useState(null);
-
+  const [upgrade, setUpgrade] = useState(false);
   const [date, setDate] = useState();
   const [checked, setChecked] = useState(false);
   const [checkedPrint, setCheckedPrint] = useState(false);
@@ -53,9 +58,10 @@ export default function ICardForm({ item, label, visbile, disble }) {
   const [motherImage, setMotherImage] = useState(null);
   const [guardianImage, setGuardianImage] = useState(null);
   const [aspectRatio, setAspectRatio] = useState();
+  const currentYear = moment().year();
   const disptch = useDispatch();
   const { Classs } = useSelector((state) => state.Class);
-  const { PhotoNumber,Numbers } = useSelector((state) => state.PhotoNumber);
+  const { PhotoNumber, Numbers } = useSelector((state) => state.PhotoNumber);
   const { Sections } = useSelector((state) => state.Section);
   const formDataHandler = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -67,7 +73,6 @@ export default function ICardForm({ item, label, visbile, disble }) {
     disptch(getPhotoNumberBySchoolId(localStorage.getItem("schoolid")));
   }, [disptch]);
 
-  
   useLayoutEffect(() => {
     if (label === "u" && item) {
       setFormData(item);
@@ -79,13 +84,13 @@ export default function ICardForm({ item, label, visbile, disble }) {
       setImageData(item.image);
       setFatherImage(item.fatherimage);
       setMotherImage(item.motherimage);
-      setGuardianImage(item.guardianimage);      
+      setGuardianImage(item.guardianimage);
     }
     if (label === "s") {
       setSelectedClass("");
       setSelectedSection("");
       setFormData(formData);
-      setFormData({...formData,photonumber:Numbers});
+      setFormData({ ...formData, photonumber: Numbers });
     }
   }, [label, item]);
 
@@ -197,7 +202,11 @@ export default function ICardForm({ item, label, visbile, disble }) {
 
   const onSave = () => {
     disptch(
-      createIcard({ ...formData, schoolid: localStorage.getItem("schoolid"),number:Numbers})
+      createIcard({
+        ...formData,
+        schoolid: localStorage.getItem("schoolid"),
+        number: Numbers,
+      })
     ).then((doc) => {
       if (doc.payload?.response?.status !== 302) {
         visbile();
@@ -325,11 +334,12 @@ export default function ICardForm({ item, label, visbile, disble }) {
       {/* <ConfirmDialog /> */}
       {/* <ConfirmPopup /> */}
       <Toast ref={toast} />
-      {loading && <Loading />}
+      {/* {loading && <Loading />} */}
       <Dialog
         visible={visbiles}
         header="Enter Parents Details"
         onHide={() => setVisbiles(false)}
+        draggable={false}
       >
         <form className="text-xs">
           <div>
@@ -426,8 +436,20 @@ export default function ICardForm({ item, label, visbile, disble }) {
           </span>
         </form>
         <div className="flex justify-center w-full mt-5">
-          <Button onClick={()=>setVisbiles(false)} className="bg-blue-600 px-5 py-2 text-white" label="Done"/>
+          <Button
+            onClick={() => setVisbiles(false)}
+            className="bg-blue-600 px-5 py-2 text-white"
+            label="Done"
+          />
         </div>
+      </Dialog>
+      <Dialog
+        visible={upgrade}
+        header="Student Session Upgrade"
+        onHide={() => setUpgrade(false)}
+        draggable={false}
+      >
+        <SessionUpgrade item={item} close={()=>{setUpgrade(setUpgrade(false)); visbile()}}/>
       </Dialog>
       <Dialog
         className="w-[95vw] md:w-[450px] h-[95vh] mx-2"
@@ -437,9 +459,11 @@ export default function ICardForm({ item, label, visbile, disble }) {
           setVisbileModel(false);
           setImage("");
         }}
+        draggable={false}
       >
         <ImageCropper image={image} onCropDone={onCropDone} />
       </Dialog>
+
       <div className="bg-white">
         <form className="flex flex-col items-center text-xs">
           <div className="flex justify-between w-full">
@@ -454,6 +478,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
               <input
                 type="file"
                 hidden
+                accept="image/png,image/jpeg,image/jpg"
                 id="inpfile"
                 onChange={handleOnChange}
               />
@@ -464,21 +489,29 @@ export default function ICardForm({ item, label, visbile, disble }) {
                 <BiCamera color="#fff" size={25} />
               </label>
             </div>
-            <Button
-              type="button"
-              onClick={() => setVisbiles(true)}
-              // label={<BiMenu />}
-              label="Add More"
-              className="w- h-8 p-2 text-xs hover:bg-blue-600 hover:text-white duration-200 border border-blue-600"
-            />
+            <div className="flex flex-col gap-3">
+              <Button
+                type="button"
+                onClick={() => setVisbiles(true)}
+                // label={<BiMenu />}
+                label="Add More"
+                className="w- h-8 p-2 text-xs hover:bg-blue-600 hover:text-white duration-200 border border-blue-600"
+              />
+              <Button
+                type="button"
+                onClick={() => setUpgrade(true)}
+                // label={<BiMenu />}
+                label="Upgrade"
+                className="w- h-8 p-2 text-xs hover:bg-blue-600 hover:text-white duration-200 border border-blue-600"
+              />
+            </div>
           </div>
           <div className="w-full  flex items-center my-1">
-          <label
+            <label
               htmlFor="number-input"
               className="font-semibold w-28 text-start text-nowrap text-xs"
             >
               Series no : {label === "u" ? formData?.photonumber : Numbers}
-
             </label>
           </div>
           <div className="w-full  flex items-center my-1">
@@ -539,7 +572,6 @@ export default function ICardForm({ item, label, visbile, disble }) {
               disabled={disble}
               optionValue="class"
               placeholder="Select Class"
-              
               panelClassName="text-xs"
               className="placeholder:text-xs capitalize border-gray-300 border text-xs mx-3 h-8 w-full rounded-md"
             />
@@ -558,6 +590,31 @@ export default function ICardForm({ item, label, visbile, disble }) {
               placeholder="Select Section"
               className=" capitalize border-gray-300 border mx-3 h-8 w-full rounded-md"
             />
+          </div>
+          <div className="w-full flex items-center my-1">
+            <label className="font-semibold w-28 text-start">
+              Academic Year :<strong className="text-red-500">*</strong>
+            </label>
+            <select
+              name="year"
+              disabled={formData?.year ? true : false}
+              value={formData?.year}
+              onChange={formDataHandler}
+              className="pl-2 border-gray-300 border mx-3 w-full rounded-md h-8"
+            >
+              <option selected disabled>
+                Select Academic Year
+              </option>
+              <option>
+                {currentYear - 1}- {currentYear}
+              </option>
+              <option>
+                {currentYear}- {currentYear + 1}
+              </option>
+              <option>
+                {currentYear + 1}- {currentYear + 2}
+              </option>
+            </select>
           </div>
 
           <div className="w-full flex items-center my-1">
@@ -647,15 +704,13 @@ export default function ICardForm({ item, label, visbile, disble }) {
               label="save"
               icon={<PiCheck size={20} />}
               disabled={
-                imageData && 
-                selectedClass &&
-                selectedSection ? false : true
+                imageData && selectedClass && selectedSection ? false : true
               }
-                // formData.name &&
-                // formData.mobile
-                //   ? false
-                //   : true
-                // date &&
+              // formData.name &&
+              // formData.mobile
+              //   ? false
+              //   : true
+              // date &&
               loading={loading}
               onClick={confirm1}
               className="text-xs gap-2 px-5 py-2 bg-green-600 hover:bg-green-700 text-white my-2 disabled:bg-green-800"

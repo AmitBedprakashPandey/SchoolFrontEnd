@@ -140,7 +140,7 @@ export default function Class() {
           rows={10}
           footer={footer}
           size="small"
-          loading={loading}
+          // loading={loading}
           dataKey="id"
           filters={filters}
           showGridlines

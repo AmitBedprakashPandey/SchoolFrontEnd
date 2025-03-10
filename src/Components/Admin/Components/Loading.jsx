@@ -1,9 +1,9 @@
 import "./loadingStype.css"
 export default function Loading(){
 return(
-    <div className="absolute left-0 right-0 top-0 bottom-0 bg-gray-900/50 z-50 flex justify-center items-center">
-    <div className=" h-auto rounded-2xl">
-<svg xmlns="http://www.w3.org/2000/svg" height="100px" width="100px" viewBox="0 0 200 200" class="pencil" className="bg-white rounded-lg">
+    <>
+    
+<svg xmlns="http://www.w3.org/2000/svg" height="200px" width="200px" viewBox="0 0 200 200" class="pencil">
 	<defs>
 		<clipPath id="pencil-eraser">
 			<rect height="20" width="20" ry="5" rx="5"></rect>
@@ -34,9 +34,7 @@ return(
 		</g>
 	</g>
 </svg>
-
-	</div>
     
-    </div>
+    </>
 )
 }
