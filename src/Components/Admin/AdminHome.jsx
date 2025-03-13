@@ -74,8 +74,7 @@ export default function AdminHome(params) {
       url: "printed",
       disabled: localStorage.getItem("expiredStatus") === true ? true : false,
       icon: <PiIdentificationBadgeDuotone size={20} />,
-    },
-    {
+    },{
       key: "5",
       label: "De-Active",
       // icon: "pi pi-users",
@@ -89,17 +88,24 @@ export default function AdminHome(params) {
       icon: <PiCardsDuotone size={20} />,
     },{
       key: "7",
-      label: "Set Fees",
+      label: "Session Upgrade",
       // icon: "pi pi-users",
-      url: "setfees",
-      icon: <PiMoneyDuotone size={20} />,
-    },{
-      key: "8",
-      label: "Fees Payment",
-      // icon: "pi pi-users",
-      url: "feespayment",
-      icon: <PiMoneyDuotone size={20} />,
-    },
+      url: "sessionupgrade",
+      icon: <PiCardsDuotone size={20} />,
+    }
+    // ,{
+    //   key: "7",
+    //   label: "Set Fees",
+    //   // icon: "pi pi-users",
+    //   url: "setfees",
+    //   icon: <PiMoneyDuotone size={20} />,
+    // },{
+    //   key: "8",
+    //   label: "Fees Payment",
+    //   // icon: "pi pi-users",
+    //   url: "feespayment",
+    //   icon: <PiMoneyDuotone size={20} />,
+    // },
     // {
     //   key: "8",
     //   label: "Session Upgrade",

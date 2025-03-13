@@ -23,6 +23,7 @@ import DeActiveWithoutImage from "./Components/Admin/School/DeActiveWithoutImage
 import AdmitCard from "./Components/Admin/School/AdmitCard";
 import FeesPage from "./Components/Admin/School/FeesPage";
 import FeePayment from "./Components/Admin/School/FeePayment";
+import SessionUpgrade from "./Components/Admin/School/SessionUpgrade";
 function App() {
   return (
     <>
@@ -43,6 +44,7 @@ function App() {
           <Route path="teacher" element={<Teacher />} />
           <Route path="student" element={<Students />} />
           <Route path="admitcard" element={<AdmitCard />} />
+          <Route path="sessionupgrade" element={<SessionUpgrade />} />
           <Route path="setfees" element={<FeesPage />} />
           <Route path="feespayment" element={<FeePayment />} />
           <Route path="printed" element={<PrintedICards />} />

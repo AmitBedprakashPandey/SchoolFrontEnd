@@ -331,8 +331,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
 
   return (
     <>
-      {/* <ConfirmDialog /> */}
-      {/* <ConfirmPopup /> */}
+
       <Toast ref={toast} />
       {/* {loading && <Loading />} */}
       <Dialog
