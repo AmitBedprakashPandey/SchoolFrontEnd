@@ -52,10 +52,10 @@ function SessionUpgrade({ item, close }) {
               Select Academic Year
             </option>
             <option>
-              {currentYear}- {currentYear + 1}
+              {currentYear}-{currentYear + 1}
             </option>
             <option>
-              {currentYear + 1}- {currentYear + 2}
+              {currentYear + 1}-{currentYear + 2}
             </option>
           </select>
         </div>

@@ -14,7 +14,7 @@ import No_Image from "../Assets/Image/NO_IMAGE.jpg";
 import { Dropdown } from "primereact/dropdown";
 import { BiChevronLeft, BiEdit, BiMenu, BiPlus, BiReset } from "react-icons/bi";
 import { AllClass } from "../../Redux/Slice/ClassSlice";
-import { fetchAllIcards } from "../../Redux/Slice/IcardSlice";
+import { fetchAllIcardsBySchoolIdAndYear } from "../../Redux/Slice/IcardSlice";
 import { AllSection } from "../../Redux/Slice/SectionSlice";
 import ICardForm from "../ICardForm";
 import Loading from "../Loading";
@@ -37,8 +37,9 @@ export default function ICard() {
   const [filterIcard, setFilterIcard] = useState([]);
 
   useLayoutEffect(() => {
-    dispatch(fetchAllIcards(localStorage.getItem("schoolid"))).then((doc) => {
-      setFilterIcard(doc.payload.filter((item) => item.status == true));
+    dispatch(fetchAllIcardsBySchoolIdAndYear({school:localStorage.getItem("schoolid"),year:moment().year()+"-"+(moment().year()+1)}))
+    .then((doc) => {
+      setFilterIcard(doc.payload?.filter((item) => item.status == true));
     });
     dispatch(AllClass(localStorage.getItem("schoolid")));
     dispatch(AllSection(localStorage.getItem("schoolid")));
@@ -67,9 +68,10 @@ export default function ICard() {
     return (
       (!filterClass || item.class === filterClass) &&
       (!filterSection || item.section === filterSection) &&
-      (!searchInput ||
-        (item.name &&
-          item.name.toLowerCase().includes(searchInput.toLowerCase()))) // Step 2: Filter based on name
+      (!searchInput || 
+        (item.name && item.name.toLowerCase().includes(searchInput.toLowerCase()))
+      || (item.photonumber && String(item.photonumber).toLowerCase().includes(searchInput.toLowerCase()))
+      ) // Step 2: Filter based on name
     );
   };
 

@@ -15,6 +15,18 @@ export const fetchAllIcards = createAsyncThunk(
   }
 );
 
+export const fetchAllIcardsBySchoolIdAndYear = createAsyncThunk(
+  "Icard/allByYear",
+  async (data, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(`${url}/getStudentSy/${data?.school}/${data?.year}`);
+      return res.data.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const fetchByClassSectionSchoolAllIcards = createAsyncThunk(
   "Icard/all",
   async (data, { rejectWithValue }) => {
@@ -108,7 +120,7 @@ export const updateSessionStudentsMany = createAsyncThunk(
   async (dataArray, { rejectWithValue }) => {
     try {
       
-      const res = await axios.put(`${url}/sessionmany/${dataArray?.newData?.newClass}/${dataArray?.newData?.newSection}/${dataArray?.newData?.newYear}}`, dataArray?.selectedStudents);
+      const res = await axios.put(`${url}/sessionmany/${dataArray?.newData?.newClass}/${dataArray?.newData?.newSection}/${dataArray?.newData?.newYear}`, dataArray?.selectedStudents);
       return res.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -151,6 +163,23 @@ export const ICard = createSlice({
         state.loading = false;
       })
       .addCase(fetchAllIcards.rejected, (state, action) => {
+        state.ICards = [];
+        state.loading = false;
+        state.error = action.payload.error;
+        state.message = null;
+      })
+      .addCase(fetchAllIcardsBySchoolIdAndYear.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.message = null;
+      })
+      .addCase(fetchAllIcardsBySchoolIdAndYear.fulfilled, (state, action) => {
+        state.ICards = action.payload;
+        state.error = null;
+        state.message = null;
+        state.loading = false;
+      })
+      .addCase(fetchAllIcardsBySchoolIdAndYear.rejected, (state, action) => {
         state.ICards = [];
         state.loading = false;
         state.error = action.payload.error;

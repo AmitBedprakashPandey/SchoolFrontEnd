@@ -70,6 +70,9 @@ export default function Teacher() {
     name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     class: { value: null, matchMode: FilterMatchMode.EQUALS },
     section: { value: null, matchMode: FilterMatchMode.EQUALS },
+    photonumber:{ value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    rollno:{ value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    year:{ value: null, matchMode: FilterMatchMode.STARTS_WITH },
     status: { value: null, matchMode: FilterMatchMode.EQUALS },
     admission_id: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
@@ -114,14 +117,14 @@ export default function Teacher() {
             placeholder="Keyword Search"
           />
         </span>
-<div>
+{/* <div>
   <label>Session : </label>
   <select>
     <option selected disabled >Select Session</option>
             <option selected={currentYear === currentYear ? true : false} >{currentYear}- {currentYear+1}</option>
             <option>{currentYear+1}- {currentYear+2}</option>
   </select>
-</div>
+</div> */}
         <Button
           label="Bulk student upload "
           onClick={() => setVisible2(true)}
@@ -429,7 +432,7 @@ export default function Teacher() {
           dataKey="_id"
           filters={filters}
           filterDisplay="row"
-          globalFilterFields={["name", "class", "section"]}
+          globalFilterFields={["name", "class", "section","photonumber","year"]}
           className="h-full  relative"
           stripedRows
           header={header}

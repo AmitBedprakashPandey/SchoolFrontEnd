@@ -1,4 +1,5 @@
 import { Dropdown } from "primereact/dropdown";
+import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
@@ -13,6 +14,10 @@ import {
 import { Checkbox } from "primereact/checkbox";
 import { confirmDialog } from "primereact/confirmdialog";
 import moment from "moment";
+import { IconField } from "primereact/iconfield";
+import { InputText } from "primereact/inputtext";
+import { InputIcon } from "primereact/inputicon";
+import { BiSearch } from "react-icons/bi";
 function SessionUpgrade(params) {
   const dispatch = useDispatch();
   const [selectClass, setSelectClass] = useState();
@@ -25,6 +30,15 @@ function SessionUpgrade(params) {
   const { Classs } = useSelector((state) => state.Class);
   const [filterStudents, setFilterStudents] = useState();
   const [selectedStudents, setSelectedStudents] = useState([]);
+  const [selectYear, setSelectYear] = useState();
+
+  const [filters, setFilters] = useState({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    year: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+});
+
+const [globalFilterValue, setGlobalFilterValue] = useState('');
 
   useLayoutEffect(() => {
     dispatch(AllClass(localStorage.getItem("schoolid")));
@@ -32,7 +46,8 @@ function SessionUpgrade(params) {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchAllIcards(localStorage.getItem("schoolid")));
+    dispatch(fetchAllIcards(localStorage.getItem("schoolid"))).then((doc)=>setFilterStudents(doc.payload)
+    );
   }, [dispatch]);
 
   useEffect(() => {
@@ -41,7 +56,9 @@ function SessionUpgrade(params) {
         (item) => item.class === selectClass && item.section === selectSection
       )
     );
-  }, [selectClass, selectSection, ICards]);
+  }, [selectClass, selectSection]);
+
+
 
   useEffect(() => {}, [selectNewClass, selectNewSection]);
 
@@ -49,6 +66,7 @@ function SessionUpgrade(params) {
     const isSelected = selectedStudents.some(
       (product) => product._id === rowData._id
     );
+
     return (
       <Checkbox
         checked={isSelected}
@@ -72,9 +90,19 @@ function SessionUpgrade(params) {
     );
   };
 
+  const onGlobalFilterChange = (e) => {
+    const value = e.target.value;
+    let _filters = { ...filters };
+
+    _filters['global'].value = value;
+
+    setFilters(_filters);
+    setGlobalFilterValue(value);
+};
+
   const Year = [
-    { year: moment().year() - 1 + "-" + moment().year() },
-    { year: moment().year() + "-" + (moment().year() + 1) },
+    { year: (moment().year()-1)+"-"+moment().year() },
+    { year: moment().year()+"-"+(moment().year() + 1)},
   ];
 
   const confirm1 = () => {
@@ -100,19 +128,39 @@ function SessionUpgrade(params) {
         },
       })
     ).then(() => {
-      dispatch(fetchAllIcards(localStorage.getItem("schoolid")));
-      setSelectNewClass();
-      setSelectClass();
-      setSelectNewSection();
-      setSelectSection();
-      setSelectNewYear();
+        setSelectNewClass();
+        setSelectClass();
+        setSelectNewSection();
+        setSelectSection();
+        setSelectNewYear();
+        dispatch(fetchAllIcards(localStorage.getItem("schoolid"))).then((doc)=>setFilterStudents(doc.payload));
     });
   };
 
   return (
     <>
-      <div className="p-2">
+      <div className="p-2 flex  items-center justify-between">
         <header className="font-medium">Student Promotion</header>
+        <div className="flex justify-content-end border rounded-md">
+                <IconField iconPosition="right">
+                <InputIcon> <BiSearch /></InputIcon>
+                    <InputText value={globalFilterValue}  onChange={onGlobalFilterChange} placeholder="Search Year" className="p-1.5 font-medium" />
+                </IconField>
+            </div>
+        {/* <div className="flex gap-3 items-center">
+          <span>Session Filter :</span>
+          <Dropdown
+            //   disabled={selectClass && selectSection ? false : true}
+            placeholder="Select Acdemic Year"
+            className="w-56 border-2"
+            value={selectYear}
+            options={Year}
+            optionLabel="year"
+            optionValue="year"
+            onChange={(e) => setSelectYear(e.value)
+            }
+          />
+        </div> */}
       </div>
       <div className="w-full flex items-center">
         <div className="p-2">
@@ -204,9 +252,18 @@ function SessionUpgrade(params) {
 
       <div>
         <DataTable
-          size="small"
-          dataKey="_id"
           value={filterStudents}
+          size="small"
+          scrollable
+          scrollHeight="80vh"
+          dataKey="_id"
+          filters={filters}
+          filterDisplay="row"
+          globalFilterFields={["year"]}
+          className="h-full  relative"
+          stripedRows
+           emptyMessage="No customers found."
+           metaKeySelection={false}
           selection={selectedStudents}
           selectionMode="checkbox"
           onSelectionChange={(e) => setSelectedStudents(e.value)}
@@ -222,6 +279,7 @@ function SessionUpgrade(params) {
           <Column header="Roll No." field="rollno" />
           <Column header="Class" field="class" />
           <Column header="Section" field="section" />
+          <Column header="Year" field="year" />
         </DataTable>
       </div>
     </>
