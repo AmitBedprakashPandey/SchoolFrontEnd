@@ -48,22 +48,21 @@ export default function Teacher() {
   useLayoutEffect(()=>{
     dispatch(AllClass(localStorage.getItem("schoolid")));
     dispatch(AllSection(localStorage.getItem("schoolid")));
+    dispatch(fetchAllIcards(localStorage.getItem("schoolid")));
   },[dispatch])
 
 
-  useLayoutEffect(() => {
-    dispatch(fetchAllIcards(localStorage.getItem("schoolid"))).then((doc) =>
-      setFilterStudent(
-        doc.payload?.filter(
-          (item) =>
-            (item.status === true &&
-              item.print === false &&
-              item.image != null) ||
-            ""
-        )
-      )
-    );
-  }, [dispatch]);
+  useEffect(() => {
+    setFilterStudent(
+      ICards?.filter(
+            (item) =>
+              (item.status === true &&
+                item.print === false &&
+                item.image != null) ||
+              ""
+          )
+    )   
+  }, [ICards]);
 
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -488,7 +487,7 @@ export default function Teacher() {
             filter
             showFilterMenu={false}
             filterPlaceholder="Search by name"
-            style={{ minWidth: "6rem", maxWidth: "8rem" }}
+            style={{ minWidth: "8rem", maxWidth: "12rem" }}
             filterHeaderClassName="p-0"
             headerClassName="text-xs pl-0"
             className="text-xs p-0 px-0"
@@ -496,7 +495,7 @@ export default function Teacher() {
           <Column
             field="father_name"
             header="Father Name"
-            style={{ minWidth: "6rem", padding: 0 }}
+            style={{ minWidth: "10rem", maxWidth:"14rem", padding: 0 }}
             filterHeaderClassName="p-0"
             headerClassName="text-xs p-0 pl-0"
             className="text-xs p-0 px-0"
@@ -507,10 +506,10 @@ export default function Teacher() {
             filter
             showFilterMenu={false}
             filterPlaceholder="class"
-            style={{ minWidth: "5rem", padding: 0 }}
-            headerClassName="text-xs p-0 w-full"
-            filterHeaderClassName="p-0 w-full"
-            className="text-xs w-full"
+            style={{ minWidth: "6rem", maxWidth:"8rem", padding: 0 }}
+            headerClassName="text-xs p-0"
+            filterHeaderClassName="p-0"
+            className="text-xs"
           />
           <Column
             field="section"
@@ -518,7 +517,7 @@ export default function Teacher() {
             filter
             showFilterMenu={false}
             filterPlaceholder="section"
-            style={{ minWidth: "6rem" }}
+            style={{ minWidth: "6rem", maxWidth:"6rem" }}
             headerClassName="text-xs p-0"
             filterHeaderClassName="p-0"
             className="text-xs p-0"

@@ -20,10 +20,7 @@ function SessionUpgrade({ item, close }) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  useEffect(()=>{
-    console.log(formData);
-    
-  },[formData])
+
   const onUpdate = () => {
     dispatch(SessionUpdate({...item ,formData}));
   };

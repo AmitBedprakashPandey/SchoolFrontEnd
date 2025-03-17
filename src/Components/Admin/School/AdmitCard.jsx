@@ -480,9 +480,9 @@ export default function AdmitCard({}) {
             showFilterMenu={false}
             body={representativesItemTemplate}
             filterElement={imageFilterHeader}
-            bodyClassName="flex justify-center border"
-            filterHeaderClassName="w-16 border"
-            headerClassName="w-16 text-xs text-center pl-3 border"
+            bodyClassName="flex justify-center"
+            filterHeaderClassName="w-16"
+            headerClassName="w-16 text-xs text-center pl-3"
             className="w-16"
             style={{width:80}}
           />
@@ -492,7 +492,7 @@ export default function AdmitCard({}) {
             filter
             showFilterMenu={false}
             filterPlaceholder="Search by name"
-            style={{ minWidth: "6rem", maxWidth: "8rem" }}
+            style={{ minWidth: "8rem", maxWidth: "14rem" }}
             filterHeaderClassName="p-0"
             headerClassName="text-xs pl-0"
             className="text-xs p-0 px-0"
@@ -500,7 +500,7 @@ export default function AdmitCard({}) {
           <Column
             field="father_name"
             header="Father Name"
-            style={{ minWidth: "6rem", padding: 0 }}
+            style={{ minWidth: "12rem",maxWidth:"14rem", padding: 0 }}
             filterHeaderClassName="p-0"
             headerClassName="text-xs p-0 pl-0"
             className="text-xs p-0 px-0"
@@ -511,10 +511,10 @@ export default function AdmitCard({}) {
             filter
             showFilterMenu={false}
             filterPlaceholder="class"
-            style={{ minWidth: "5rem", padding: 0 }}
-            headerClassName="text-xs p-0 w-full"
-            filterHeaderClassName="p-0 w-full"
-            className="text-xs w-full"
+            style={{ minWidth: "4rem",maxWidth:"8rem", padding: 0 }}
+            headerClassName="text-xs p-0 "
+            filterHeaderClassName="p-0 "
+            className="text-xs"
           />
           <Column
             field="section"
@@ -522,7 +522,7 @@ export default function AdmitCard({}) {
             filter
             showFilterMenu={false}
             filterPlaceholder="section"
-            style={{ minWidth: "6rem" }}
+            style={{ minWidth: "4rem",maxWidth:"8rem" }}
             headerClassName="text-xs p-0"
             filterHeaderClassName="p-0"
             className="text-xs p-0"

@@ -16,8 +16,8 @@ import { BiChevronLeft, BiEdit, BiMenu, BiPlus, BiReset } from "react-icons/bi";
 import { AllClass } from "../../Redux/Slice/ClassSlice";
 import { fetchAllIcardsBySchoolIdAndYear } from "../../Redux/Slice/IcardSlice";
 import { AllSection } from "../../Redux/Slice/SectionSlice";
-import ICardForm from "../ICardForm";
 import Loading from "../Loading";
+import StudentCardFrom from "./StudentCardForm";
 
 export default function ICard() {
   const navigate = useNavigate();
@@ -37,13 +37,19 @@ export default function ICard() {
   const [filterIcard, setFilterIcard] = useState([]);
 
   useLayoutEffect(() => {
-    dispatch(fetchAllIcardsBySchoolIdAndYear({school:localStorage.getItem("schoolid"),year:moment().year()+"-"+(moment().year()+1)}))
-    .then((doc) => {
-      setFilterIcard(doc.payload?.filter((item) => item.status == true));
-    });
+    dispatch(
+      fetchAllIcardsBySchoolIdAndYear({
+        school: localStorage.getItem("schoolid"),
+        year: localStorage.getItem("sessionyear"),
+      })
+    );
     dispatch(AllClass(localStorage.getItem("schoolid")));
     dispatch(AllSection(localStorage.getItem("schoolid")));
   }, [dispatch]);
+
+  useEffect(() => {
+    setFilterIcard(ICards?.filter((item) => item.status == true));
+  }, [ICards]);
 
   useEffect(() => {
     if (imageFilter) {
@@ -68,17 +74,19 @@ export default function ICard() {
     return (
       (!filterClass || item.class === filterClass) &&
       (!filterSection || item.section === filterSection) &&
-      (!searchInput || 
-        (item.name && item.name.toLowerCase().includes(searchInput.toLowerCase()))
-      || (item.photonumber && String(item.photonumber).toLowerCase().includes(searchInput.toLowerCase()))
-      ) // Step 2: Filter based on name
+      (!searchInput ||
+        (item.name &&
+          item.name.toLowerCase().includes(searchInput.toLowerCase())) ||
+        (item.photonumber && 
+          String(item.photonumber)
+            .toLowerCase()
+            .includes(searchInput.toLowerCase()))) // Step 2: Filter based on name
     );
   };
 
-  useEffect(() => {}, []);
   return (
     <>
-      {loading && <Loading />}
+      {/* {loading && <Loading />} */}
 
       <div className="w-full bg-red-500 p-3">
         <div className="flex justify-between items-center gap-5 w-fill">
@@ -89,7 +97,6 @@ export default function ICard() {
             </button>
             <span className="text-white font-semibold text-xl">ICard List</span>
           </div>
-          
         </div>
       </div>
 
@@ -100,7 +107,7 @@ export default function ICard() {
         onHide={() => setVisible(false)}
         className="w-[95vw] md:w-[450px] h-[95vh] md:h-auto mx-2"
       >
-        <ICardForm
+        <StudentCardFrom
           item={selectOneStudent}
           label={label}
           disble={false}

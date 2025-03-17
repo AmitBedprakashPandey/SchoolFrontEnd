@@ -2,34 +2,33 @@ import Compressor from "compressorjs";
 import { Calendar } from "primereact/calendar";
 import { Checkbox } from "primereact/checkbox";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
-import { ConfirmPopup } from "primereact/confirmpopup";
 import { Dialog } from "primereact/dialog";
 import { Dropdown } from "primereact/dropdown";
 import { InputNumber } from "primereact/inputnumber";
 import { InputTextarea } from "primereact/inputtextarea";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AllClassBySchoolStatus } from "../Redux/Slice/ClassSlice";
-import { createIcard, updateIcard } from "../Redux/Slice/IcardSlice";
-import { AllSectionBySchoolStatus } from "../Redux/Slice/SectionSlice";
+import { AllClassBySchoolStatus } from "../../Redux/Slice/ClassSlice";
+import { createIcard, updateIcard } from "../../Redux/Slice/IcardSlice";
 import {
   getPhotoNumberBySchoolId,
   updatePhotoNumber,
-} from "../Redux/Slice/PhotoNumberSlice";
-import No_Image from "./Assets/Image/NO_IMAGE.jpg";
-import Loading from "./Loading";
+} from "../../Redux/Slice/PhotoNumberSlice";
+import { AllSectionBySchoolStatus } from "../../Redux/Slice/SectionSlice";
+import No_Image from "../Assets/Image/NO_IMAGE.jpg";
+import Loading from "../Loading";
 
+import moment from "moment/moment";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
-import { BiCamera, BiMenu } from "react-icons/bi";
-import ImageCropper from "./ImageCropper2";
+import { BiCamera } from "react-icons/bi";
 import { PiCheck } from "react-icons/pi";
-import moment from "moment/moment";
-import SessionUpgrade from "./Admin/Components/SessionUpgrade";
+import SessionUpgrade from "../Admin/Components/SessionUpgrade";
+import ImageCropper from "../ImageCropper2";
 // import { Image } from "primereact/image";
 
-export default function ICardForm({ item, label, visbile, disble }) {
+export default function StudentCardFrom({ item, label, visbile, disble }) {
   const [formData, setFormData] = useState({
     address: "",
     father_name: "",
@@ -74,8 +73,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
   useLayoutEffect(() => {
     disptch(AllClassBySchoolStatus(localStorage.getItem("schoolid")));
     disptch(AllSectionBySchoolStatus(localStorage.getItem("schoolid")));
-      disptch(getPhotoNumberBySchoolId(localStorage.getItem("schoolid")));
-    
+    disptch(getPhotoNumberBySchoolId(localStorage.getItem("schoolid")));
   }, [disptch]);
 
   useLayoutEffect(() => {
@@ -214,8 +212,10 @@ export default function ICardForm({ item, label, visbile, disble }) {
         photonumber: PhotoNumber?.prefix + PhotoNumber?.number,
       })
     ).then((doc) => {
+      console.log("data",doc);
+      
       if (doc.payload?.message === "Create successfully") {
-        showErrorToast(doc.payload?.message);
+        showErrorToast(doc.payload?.message );
         disptch(updatePhotoNumber(PhotoNumber));
         visbile();
       }
@@ -234,7 +234,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
       updateIcard({
         ...formData,
         school: localStorage.getItem("schoolid"),
-        photonumber: formData?.photonumber ? formData?.photonumber : PhotoNumber?.prefix + PhotoNumber?.number,
+        photonumber:   formData?.photonumber ? formData?.photonumber: PhotoNumber?.prefix + PhotoNumber?.number,
       })
     ).then(() => {
       if (!formData?.photonumber) {
@@ -351,7 +351,7 @@ export default function ICardForm({ item, label, visbile, disble }) {
   return (
     <>
       <Toast ref={toast} />
-
+      <ConfirmDialog />
       <Dialog
         visible={visbiles}
         header="Enter Parents Details"
@@ -486,9 +486,8 @@ export default function ICardForm({ item, label, visbile, disble }) {
       >
         <ImageCropper image={image} onCropDone={onCropDone} />
       </Dialog>
-
+      {NumberLoader && <Loading />}
       <div className="bg-white">
-        {NumberLoader && <Loading />}
         <form className="flex flex-col items-center text-xs">
           <div className="flex justify-between w-full">
             <div className="relative my-3">
@@ -521,21 +520,21 @@ export default function ICardForm({ item, label, visbile, disble }) {
                 label="Add More"
                 className="w- h-8 p-2 text-xs hover:bg-blue-600 hover:text-white duration-200 border border-blue-600"
               />
-              <Button
+              {/* <Button
                 type="button"
                 onClick={() => setUpgrade(true)}
                 // label={<BiMenu />}
                 label="Upgrade"
                 className="w- h-8 p-2 text-xs hover:bg-blue-600 hover:text-white duration-200 border border-blue-600"
-              />
+              /> */}
             </div>
           </div>
           <div className="w-full  flex items-center my-1">
             <label
               htmlFor="number-input"
-              className="font-semibold w-28 text-start text-nowrap text-xs flex gap-3"
+              className="font-semibold w-28 text-start text-nowrap text-xs flex gap-3 "
             >
-              Series no :{" "}
+              Series no :
               <div className="uppercase">
                 {label === "u"
                   ? formData?.photonumber || (
@@ -631,20 +630,20 @@ export default function ICardForm({ item, label, visbile, disble }) {
             <select
               name="year"
               // disabled={formData?.year ? true : false}
-              value={formData?.year || currentYear + 1}
+              value={formData?.year  || currentYear + 1}
               onChange={formDataHandler}
               className="pl-2 border-gray-300 border mx-3 w-full rounded-md h-8"
             >
               <option selected disabled>
                 Select Academic Year
               </option>
-              <option>
+              <option >
                 {currentYear - 1}-{currentYear}
               </option>
-              <option>
+              <option >
                 {currentYear}-{currentYear + 1}
               </option>
-              <option>
+              <option >
                 {currentYear + 1}-{currentYear + 2}
               </option>
             </select>

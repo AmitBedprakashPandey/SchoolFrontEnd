@@ -6,18 +6,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useLayoutEffect } from "react";
 import { getByUserAllSchool } from "../../Redux/Slice/SchoolSlice";
 import {
-  BiUserCircle,
   BiLogOutCircle,
-  BiIdCard,
-  BiError,
+  BiIdCard
 } from "react-icons/bi";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
-import {verifyExpire} from "../../Redux/Slice/ExpireSlice";
+import { verifyExpire } from "../../Redux/Slice/ExpireSlice";
+import {
+  fetchAllIcardsBySchoolIdAndYear
+} from "../../Redux/Slice/IcardSlice";
 export default function PartyHome(params) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { School } = useSelector((state) => state.School);
+  const { ICards } = useSelector((state) => state.Icard);
+
+  const { School, loading } = useSelector((state) => state.School);
 
   const { error } = useSelector((state) => state.PartyAuth);
 
@@ -28,6 +31,15 @@ export default function PartyHome(params) {
   }, [navigate]);
 
   useLayoutEffect(() => {
+    if (ICards == []) {
+      dispatch(
+        fetchAllIcardsBySchoolIdAndYear({
+          school: localStorage.getItem("schoolid"),
+          year: localStorage.getItem("sessionyear"),
+        })
+      );
+    }
+
     dispatch(getByUserAllSchool(localStorage.getItem("schoolid"))).then(
       (doc) => {
         if (doc.payload?.response?.status === 403) {
@@ -59,26 +71,25 @@ export default function PartyHome(params) {
   return (
     <>
       <ConfirmDialog />
-      <div className="bg-red-500 rounded-b-3xl fixed top-0 left-0 right-0 z-50 shadow-gray-400 shadow-md">
+      {/* {loading && <Loading />} */}
+      <div className="bg-red-500 rounded-b-3xl fixed top-0 left-0 right-0 z-40 shadow-gray-400 shadow-md">
         <div className="flex justify-between px-10 py-4">
-
           <div className="flex items-center gap-4">
-          <Avatar icon="pi pi-user" size="normal" shape="circle" />           
+            <Avatar icon="pi pi-user" size="normal" shape="circle" />
             <label className="flex flex-col ">
               <small className="text-white">
-                {localStorage.getItem("schoolName")}
+                {localStorage.getItem("schoolName")} - {localStorage.getItem("sessionyear")}
               </small>
               <span className="text-[8pt] italic text-white">
                 Welcome, {localStorage.getItem("user")}
               </span>
             </label>
-          </div>      
+          </div>
 
           <button onClick={confirm1} className="text-white p-ripple">
             <BiLogOutCircle size={30} />
             <Ripple />
           </button>
-
         </div>
       </div>
       <div className="overflow-scroll h-screen">
