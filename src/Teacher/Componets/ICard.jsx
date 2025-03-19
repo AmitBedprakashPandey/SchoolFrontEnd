@@ -6,54 +6,38 @@ import { Ripple } from "primereact/ripple";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import No_Image from "./Assets/Image/NO_IMAGE.jpg";
-import Loading from "./Loading";
+import No_Image from "../../Components/Assets/Image/NO_IMAGE.jpg";
+import Loading from "../../Components/Loading";
 
 import { BiChevronLeft, BiEdit, BiIdCard } from "react-icons/bi";
 
-import ICardForm from "./ICardForm";
-
-import { AllClass } from "../Redux/Slice/ClassSlice";
-import { fetchByClassSectionSchoolAllIcards } from "../Redux/Slice/IcardSlice";
-import { AllSection } from "../Redux/Slice/SectionSlice";
-import { getByIdTeacher } from "../Redux/Slice/TeacherSlice";
 import { Toast } from "primereact/toast";
-import StudentCardFrom from "./Party/StudentCardForm";
+import StudentCardFrom from "../../Teacher/Componets/StudentCardForm";
+import { fetchByClassSectionSchoolAllIcards } from "../../Redux/Slice/IcardSlice";
 
 export default function ICard() {
   const navigate = useNavigate();
   const disptch = useDispatch();
   const [visible, setVisible] = useState(false);
-  const [visible2, setVisible2] = useState(false);
   const [selectOneStudent, setSelectOneStudent] = useState();
   const [label, setLable] = useState("");
-  // const [filterItem, setFilterItem] = useState([]);
-  const [selectedItems, setSelectedItems] = useState([]);
-  // const [filterClass, setFilterClass] = useState();
-  // const [filterSection, setFilterSection] = useState();
-  const [selectAll, setSelectAll] = useState(false);
-  const { Teacher } = useSelector((state) => state.Teacher);
   const { ICards, loading, message, error } = useSelector(
     (state) => state.Icard
   );
-  // const { Classs } = useSelector((state) => state.Class);
-  // const { Sections } = useSelector((state) => state.Section);
+  const { userData } = useSelector((state) => state.Auth);
 
   useEffect(() => {
-    disptch(getByIdTeacher(localStorage.getItem("teach")));
-
-    disptch(
-      fetchByClassSectionSchoolAllIcards({
-        classs: Teacher?.classs,
-        section: Teacher?.section,
-        school: Teacher?.schoolid,
-        year: localStorage.getItem("sessionyear"),
+    disptch(fetchByClassSectionSchoolAllIcards({
+      class: userData?.class,
+        section: userData?.section,
+        school: userData?.Schoolid,
+        year: userData?.sessionyear,
       })
     );
   }, [disptch]);
 
   useLayoutEffect(() => {
-    if (!localStorage.getItem("Ttoken")) {
+    if (!userData?.token) {
       navigate("/login");
     }
   }, []);
@@ -72,7 +56,7 @@ export default function ICard() {
       life: 3000,
     });
   };
-  
+
   const showSuccessToast = (message) => {
     toast.current.show({
       severity: "success",

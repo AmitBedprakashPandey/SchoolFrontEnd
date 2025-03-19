@@ -1,13 +1,11 @@
 import React, { useLayoutEffect, useRef, useState } from "react";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
-import { Ripple } from "primereact/ripple";
-import { loginUser, logout } from "../Redux/Slice/LoginSlice";
+import { loginUser } from "../../Redux/Slice/LoginSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Message } from "primereact/message";
 import { FloatLabel } from "primereact/floatlabel";
-import { Toast } from "primereact/toast";
 
 export default function LoginPage() {
   const [user, setUser] = useState("");
@@ -16,22 +14,25 @@ export default function LoginPage() {
   const toast = useRef(null);
   const navigate = useNavigate();
   const { error } = useSelector((state) => state.Auth);
+
   useLayoutEffect(() => {
     if (localStorage.getItem("Ttoken")) {
       navigate("/");
+    } else {
+      navigate("/login");
     }
   }, [navigate]);
 
   const onSubmilt = () => {
-    dispatch(loginUser({ email: user, pass: pass })).then(() => {
-      if (!error) {
+    dispatch(loginUser({ email: user, pass: pass })).then((doc) => {
+      if (loginUser.fulfilled.match(doc)) {
         navigate("/");
       }
     });
   };
+
   return (
     <>
-      <Toast ref={toast} />
       <div className="w-screen h-screen bg-blue-500">
         <div className="login-gray-layer bg-gray-200 rounded-b-3xl">
           <h1 className="capitalize text-4xl font-bold text-center pt-24">
@@ -57,6 +58,8 @@ export default function LoginPage() {
               <InputText
                 id="username"
                 value={user}
+                autoComplete="email"
+                type="email"
                 className="w-full border-gray-300 border rounded-xl h-16 pl-3"
                 onChange={(e) => setUser(e.target.value)}
               />
@@ -67,6 +70,7 @@ export default function LoginPage() {
                 <Password
                   inputId="password"
                   value={pass}
+                  autoComplete="new-password"
                   onChange={(e) => setPass(e.target.value)}
                   inputClassName="w-full h-16 pl-3"
                   className="w-full border-gray-300 border rounded-xl overflow-hidden"
@@ -79,11 +83,12 @@ export default function LoginPage() {
             <button
               onClick={onSubmilt}
               type="button"
+              // loading={loading}
+              label="Login"
               disabled={user && pass ? false : true}
               className="w-full bg-red-500 text-white p-6 rounded-full text-center mt-5 font-bold p-ripple disabled:bg-red-700"
             >
               Login
-              {user && pass ? <Ripple /> : ""}
             </button>
           </form>
         </div>

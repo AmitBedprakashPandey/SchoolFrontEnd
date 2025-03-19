@@ -13,7 +13,6 @@ export const getAllTeacherBySchool = createAsyncThunk(
       return res.data;
       
     } catch (error) {
-      console.log(error)
       return rejectWithValue(error);
     }
   }
@@ -21,7 +20,7 @@ export const getAllTeacherBySchool = createAsyncThunk(
 
 // teacher portal
 export const getByIdTeacher = createAsyncThunk(
-  "Teacher/BySchoolall",
+  "Teacher/getTeacherById",
   async (id, { rejectWithValue }) => {
     try {
       const res = await axios.get(`${url}/${id}`);
@@ -77,6 +76,20 @@ export const Teacher = createSlice({
         state.loading = false;
       })
       .addCase(getAllTeacherBySchool.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getByIdTeacher.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.message=null
+      })
+      .addCase(getByIdTeacher.fulfilled, (state, action) => {
+        state.Teacher = action.payload;        
+        state.error = null;
+        state.loading = false;
+      })
+      .addCase(getByIdTeacher.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

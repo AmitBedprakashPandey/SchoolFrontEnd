@@ -1,9 +1,10 @@
 import "./App.css";
 import "react-image-crop/dist/ReactCrop.css";
 import { Route, Routes } from "react-router-dom";
-import LoginPage from "./Components/LoginPage";
-import Home from "./Components/Home";
-import ICard from "./Components/ICard";
+import LoginPage from "./Teacher/Componets/LoginPage";
+import Home from "./Teacher/Home";
+import TeacherMenuList from "./Teacher/Componets/MenuList";
+import ICard from "./Teacher/Componets/ICard";
 import PrintPage from "./Components/PrintPage";
 import AdmitCardPrint from "./Components/AdmitCardPrint";
 import BulkExcelUploadForm from "./Components/BulkExcelUploadForm";
@@ -29,12 +30,14 @@ function App() {
     <>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home />}>
+        <Route index element={<TeacherMenuList />} />
+        <Route index path="icard" element={<ICard />} />
+          </Route>
         <Route path="/test" element={<ImageCropTest />} />
         <Route path="/crop" element={<ImageCropper />} />
         <Route path="/print" element={<PrintPage />} />
         <Route path="/admitcardprint" element={<AdmitCardPrint />} />
-        <Route path="/icard" element={<ICard />} />
         <Route path="/bulk" element={<BulkExcelUploadForm />} />
         <Route path="/adminlogin" element={<AdminLogin />} />
 

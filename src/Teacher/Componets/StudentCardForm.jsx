@@ -15,8 +15,8 @@ import {
   updatePhotoNumber,
 } from "../../Redux/Slice/PhotoNumberSlice";
 import { AllSectionBySchoolStatus } from "../../Redux/Slice/SectionSlice";
-import No_Image from "../Assets/Image/NO_IMAGE.jpg";
-import Loading from "../Loading";
+import No_Image from "../../Assets/Image/NO_IMAGE.jpg";
+import Loading from "../../Components/Loading";
 
 import moment from "moment/moment";
 import { Button } from "primereact/button";
@@ -24,22 +24,23 @@ import { InputText } from "primereact/inputtext";
 import { Toast } from "primereact/toast";
 import { BiCamera } from "react-icons/bi";
 import { PiCheck } from "react-icons/pi";
-import SessionUpgrade from "../Admin/Components/SessionUpgrade";
-import ImageCropper from "../ImageCropper2";
+import SessionUpgrade from "../../Components/Admin/Components/SessionUpgrade";
+import ImageCropper from "../../Components/ImageCropper2";
 // import { Image } from "primereact/image";
 
 export default function StudentCardFrom({ item, label, visbile, disble }) {
+  const { error, userData } = useSelector((state) => state.Auth);
   const [formData, setFormData] = useState({
     address: "",
     father_name: "",
     name: "",
     mobile: "",
     image: "",
-    class: "",
     dob: null,
-    schoolid: localStorage.getItem("schoolid"),
+    schoolid: null,
     admission_id: "",
-    section: "",
+    section: null,
+    class: null,
     status: false,
     print: false,
   });
@@ -51,8 +52,8 @@ export default function StudentCardFrom({ item, label, visbile, disble }) {
   const [date, setDate] = useState();
   const [checked, setChecked] = useState(false);
   const [checkedPrint, setCheckedPrint] = useState(false);
-  const [selectedSection, setSelectedSection] = useState(null);
-  const [selectedClass, setSelectedClass] = useState(null);
+  const [selectedSection, setSelectedSection] = useState();
+  const [selectedClass, setSelectedClass] = useState();
   const [fatherImage, setFatherImage] = useState(null);
   const [motherImage, setMotherImage] = useState(null);
   const [guardianImage, setGuardianImage] = useState(null);
@@ -66,14 +67,15 @@ export default function StudentCardFrom({ item, label, visbile, disble }) {
     Numbers,
   } = useSelector((state) => state.PhotoNumber);
   const { Sections } = useSelector((state) => state.Section);
+
   const formDataHandler = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   useLayoutEffect(() => {
-    disptch(AllClassBySchoolStatus(localStorage.getItem("schoolid")));
-    disptch(AllSectionBySchoolStatus(localStorage.getItem("schoolid")));
-    disptch(getPhotoNumberBySchoolId(localStorage.getItem("schoolid")));
+    disptch(AllClassBySchoolStatus(userData?.Schoolid));
+    disptch(AllSectionBySchoolStatus(userData?.Schoolid));
+    disptch(getPhotoNumberBySchoolId(userData?.Schoolid));
   }, [disptch]);
 
   useLayoutEffect(() => {
@@ -204,44 +206,58 @@ export default function StudentCardFrom({ item, label, visbile, disble }) {
   };
 
   const onSave = () => {
-
     disptch(
       createIcard({
         ...formData,
-        schoolid: localStorage.getItem("schoolid"),
+        schoolid: userData?.Schoolid,
         photonumber: PhotoNumber?.prefix + PhotoNumber?.number,
       })
     ).then((doc) => {
-      
-      if (doc.payload?.message === "Create successfully") {
-        showErrorToast(doc.payload?.message );
+      if (createIcard.fulfilled.match(doc)) {
+        showErrorToast(doc.payload?.message);
         disptch(updatePhotoNumber(PhotoNumber));
         visbile();
       }
       if (doc.payload?.response?.status === 500) {
-        doc.payload?.response.data.error.keyValue.admission_id && showErrorToast("Admission Number " + doc.payload?.response.data.error.keyValue.admission_id +" Alrady Exist !");
-        doc.payload?.response.data.error.keyValue.rollno && showErrorToast("Roll Number " + doc.payload?.response.data.error.keyValue.rollno +" Alrady Exist !");
-        doc.payload?.response.data.error.keyValue.photonumber && showErrorToast("Serial Number " + doc.payload?.response.data.error.keyValue.photonumber +" Alrady Exist !");
+        doc.payload?.response.data.error.keyValue.admission_id &&
+          showErrorToast(
+            "Admission Number " +
+              doc.payload?.response.data.error.keyValue.admission_id +
+              " Alrady Exist !"
+          );
+        doc.payload?.response.data.error.keyValue.rollno &&
+          showErrorToast(
+            "Roll Number " +
+              doc.payload?.response.data.error.keyValue.rollno +
+              " Alrady Exist !"
+          );
+        doc.payload?.response.data.error.keyValue.photonumber &&
+          showErrorToast(
+            "Serial Number " +
+              doc.payload?.response.data.error.keyValue.photonumber +
+              " Alrady Exist !"
+          );
       }
     });
-
   };
 
   const onUpdate = () => {
-
     disptch(
       updateIcard({
         ...formData,
-        school: localStorage.getItem("schoolid"),
-        photonumber:   formData?.photonumber ? formData?.photonumber: PhotoNumber?.prefix + PhotoNumber?.number,
+        school: userData?.Schoolid,
+        photonumber: formData?.photonumber
+          ? formData?.photonumber
+          : PhotoNumber?.prefix + PhotoNumber?.number,
       })
-    ).then(() => {
-      if (!formData?.photonumber) {
-        disptch(updatePhotoNumber(PhotoNumber));
+    ).then((doc) => {
+      if (updateIcard.fulfilled.match(doc)) {
+        if (!formData?.photonumber) {
+          disptch(updatePhotoNumber(PhotoNumber));
+        }
       }
       visbile();
     });
-
   };
 
   const confirm1 = () => {
@@ -598,7 +614,10 @@ export default function StudentCardFrom({ item, label, visbile, disble }) {
             <Dropdown
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.value)}
-              options={Classs}
+              name="class"
+              defaultChecked={true}
+              defaultValue={userData?.class}
+              options={Classs.filter((doc) => doc.class === userData?.class)}
               optionLabel="class"
               disabled={disble}
               optionValue="class"
@@ -614,7 +633,9 @@ export default function StudentCardFrom({ item, label, visbile, disble }) {
             <Dropdown
               value={selectedSection}
               onChange={(e) => setSelectedSection(e.value)}
-              options={Sections}
+              options={Sections.filter(
+                (doc) => doc.section === userData?.section
+              )}
               optionLabel="section"
               disabled={disble}
               optionValue="section"
@@ -629,20 +650,20 @@ export default function StudentCardFrom({ item, label, visbile, disble }) {
             <select
               name="year"
               // disabled={formData?.year ? true : false}
-              value={formData?.year  || currentYear + 1}
+              value={formData?.year || currentYear + 1}
               onChange={formDataHandler}
               className="pl-2 border-gray-300 border mx-3 w-full rounded-md h-8"
             >
               <option selected disabled>
                 Select Academic Year
               </option>
-              <option >
+              <option>
                 {currentYear - 1}-{currentYear}
               </option>
-              <option >
+              <option>
                 {currentYear}-{currentYear + 1}
               </option>
-              <option >
+              <option>
                 {currentYear + 1}-{currentYear + 2}
               </option>
             </select>

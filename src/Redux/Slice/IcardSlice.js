@@ -15,8 +15,9 @@ export const fetchAllIcards = createAsyncThunk(
   }
 );
 
+// ThirdParty Get All Student
 export const fetchAllIcardsBySchoolIdAndYear = createAsyncThunk(
-  "Icard/allByYear",
+  "Icard/Thirdparty/AllStudent",
   async (data, { rejectWithValue }) => {
     try {
       const res = await axios.get(
@@ -29,14 +30,18 @@ export const fetchAllIcardsBySchoolIdAndYear = createAsyncThunk(
   }
 );
 
+// Teacher Get All Student
 export const fetchByClassSectionSchoolAllIcards = createAsyncThunk(
-  "Icard/all",
+  "Icard/Teacher/allStudent",
   async (data, { rejectWithValue }) => {
     try {
+      
       // class section school
       const res = await axios.get(
-        `${url}/${data.classs}/${data.section}/${data.school}`
+        `${url}/${data.class}/${data.section}/${data.school}/${data.year}`
       );
+
+      
       return res.data.find;
     } catch (error) {
       return rejectWithValue(error);
@@ -44,6 +49,7 @@ export const fetchByClassSectionSchoolAllIcards = createAsyncThunk(
   }
 );
 
+// Create Student
 export const createIcard = createAsyncThunk(
   "Icard/create",
   async (data, { rejectWithValue }) => {
@@ -56,6 +62,7 @@ export const createIcard = createAsyncThunk(
   }
 );
 
+// Update Student
 export const updateIcard = createAsyncThunk(
   "Icard/update",
   async (data, { rejectWithValue }) => {
@@ -68,6 +75,7 @@ export const updateIcard = createAsyncThunk(
   }
 );
 
+// Delete Student
 export const deleteIcard = createAsyncThunk(
   "Icard/delete",
   async (id, { rejectWithValue }) => {
@@ -80,6 +88,7 @@ export const deleteIcard = createAsyncThunk(
   }
 );
 
+// insertMany Student Excel
 export const insertManyIcards = createAsyncThunk(
   "icard/insertMany",
   async (dataArray, { rejectWithValue }) => {
@@ -92,6 +101,8 @@ export const insertManyIcards = createAsyncThunk(
     }
   }
 );
+
+
 export const updateManyIcards = createAsyncThunk(
   "icard/updateMany",
   async (dataArray, { rejectWithValue }) => {
@@ -104,7 +115,8 @@ export const updateManyIcards = createAsyncThunk(
     }
   }
 );
-// updateprintstatus
+
+// update Print status Bulk
 export const updatePrintStatusMany = createAsyncThunk(
   "icard/updatePrintStatusMany",
   async (dataArray, { rejectWithValue }) => {
@@ -117,6 +129,7 @@ export const updatePrintStatusMany = createAsyncThunk(
   }
 );
 
+// 
 export const updateSessionStudentsMany = createAsyncThunk(
   "icard/updateSessionStudentMany",
   async (dataArray, { rejectWithValue }) => {
@@ -173,6 +186,23 @@ export const ICard = createSlice({
         state.error = action.payload.error;
         state.message = null;
       })
+      .addCase(fetchByClassSectionSchoolAllIcards.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.message = null;
+      })
+      .addCase(fetchByClassSectionSchoolAllIcards.fulfilled, (state, action) => {
+        state.loading = false;
+        state.ICards = action.payload;
+        state.error = null;
+        state.message = null;
+      })
+      .addCase(fetchByClassSectionSchoolAllIcards.rejected, (state, action) => {
+        state.ICards = [];
+        state.loading = false;
+        state.error = action.payload.error;
+        state.message = null;
+      })
       .addCase(fetchAllIcardsBySchoolIdAndYear.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -197,7 +227,6 @@ export const ICard = createSlice({
       })
       .addCase(createIcard.fulfilled, (state, action) => {
         state.error = null;
-        console.log(action.payload);
         
         state.ICards.push(action.payload.data);
         state.loading = false;

@@ -8,16 +8,7 @@ export const loginUser = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       const response = await axios.post(`${url}/login`, credentials);
-      if (response.status === 404) {
-        return rejectWithValue(response?.data);
-      }
-      if (response.status === 200) {
-        localStorage.setItem("user", response.data.email);
-        localStorage.setItem("Ttoken", response.data.token);
-        localStorage.setItem("teach", response.data.teach);
-
-        return response.data;
-      }
+      return response.data;
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -28,6 +19,7 @@ export const loginSlice = createSlice({
   name: "auth",
   initialState: {
     user: null,
+    userData : JSON.parse(localStorage.getItem("loginData")), 
     loading: false,
     error: null,
   },
@@ -35,11 +27,7 @@ export const loginSlice = createSlice({
     logout: (state) => {
       state.error = null;
       state.user = null;
-
-      localStorage.removeItem("user");
-      localStorage.removeItem("Ttoken");
-      localStorage.removeItem("teach");
-      localStorage.removeItem("schoolid");
+      localStorage.removeItem("loginData");
     },
   },
   extraReducers: (builder) => {
@@ -50,8 +38,10 @@ export const loginSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.error = null;
-        state.loading = false;
         state.user = action.payload;
+        localStorage.setItem("loginData", JSON.stringify(action.payload));
+        localStorage.setItem("Ttoken",action.payload?.token);
+        state.loading = false;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
