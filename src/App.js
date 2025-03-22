@@ -25,6 +25,7 @@ import AdmitCard from "./Components/Admin/School/AdmitCard";
 import FeesPage from "./Components/Admin/School/FeesPage";
 import FeePayment from "./Components/Admin/School/FeePayment";
 import SessionUpgrade from "./Components/Admin/School/SessionUpgrade";
+import OldStudent from "./Components/Admin/School/OldStudent";
 function App() {
   return (
     <>
@@ -46,6 +47,7 @@ function App() {
           <Route path="section" element={<Section />} />
           <Route path="teacher" element={<Teacher />} />
           <Route path="student" element={<Students />} />
+          <Route path="oldstudent" element={<OldStudent />} />
           <Route path="admitcard" element={<AdmitCard />} />
           <Route path="sessionupgrade" element={<SessionUpgrade />} />
           <Route path="setfees" element={<FeesPage />} />

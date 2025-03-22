@@ -32,6 +32,8 @@ export default function Teacher() {
   const [visible, setVisible] = useState(false);
   const [visible2, setVisible2] = useState(false);
   const [imageFilterChecked, setImageFilterChecked] = useState(false);
+  const [selectSession, setSelectSession] = useState();
+  
   const [label, setLable] = useState();
     const currentYear = moment().year();
   const { ICards, loading, message, error } = useSelector(
@@ -62,7 +64,16 @@ export default function Teacher() {
               ""
           )
     )   
-  }, [ICards]);
+  }, []);
+
+  useEffect(()=>{
+    setFilterStudent(
+      ICards?.filter(
+            (item) =>item.year === selectSession
+          )
+    )
+  },[selectSession])
+
 
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -116,14 +127,18 @@ export default function Teacher() {
             placeholder="Keyword Search"
           />
         </span>
-{/* <div>
-  <label>Session : </label>
-  <select>
+<div>
+  <label>Session :</label>
+  <select
+  value={selectSession}
+  onChange={(e)=>setSelectSession(e.target.value)}
+  >
     <option selected disabled >Select Session</option>
-            <option selected={currentYear === currentYear ? true : false} >{currentYear}- {currentYear+1}</option>
-            <option>{currentYear+1}- {currentYear+2}</option>
+    <option >{currentYear-1}-{currentYear}</option>
+            <option >{currentYear}-{currentYear+1}</option>
+            <option>{currentYear+1}-{currentYear+2}</option>
   </select>
-</div> */}
+</div>
         <Button
           label="Bulk student upload "
           onClick={() => setVisible2(true)}
@@ -458,6 +473,18 @@ export default function Teacher() {
             className="text-xs flex items-center"
           ></Column>
           <Column
+            field="photonumber"
+            header="Serial No."
+            filter
+            showFilterMenu={false}
+            filterPlaceholder="Search"
+            style={{ minWidth: "5rem", maxWidth: "4rem" }}
+            bodyClassName="h-full text-center"
+            filterHeaderClassName="p-0"
+            headerClassName="text-xs p-0 pl-0"
+            className="text-xs"
+          />
+          <Column
             field="admission_id"
             header="Admi. No."
             filter
@@ -547,6 +574,14 @@ export default function Teacher() {
             bodyClassName={"p-0"}
             className="text-xs"
           />
+              <Column
+                      field="year"
+                      header="Year"
+                      style={{ minWidth: "5rem" }}
+                      headerClassName="text-xs p-0"
+                      bodyClassName={"p-0"}
+                      className="text-xs"
+                    />
           <Column
             field="status"
             header="Status"

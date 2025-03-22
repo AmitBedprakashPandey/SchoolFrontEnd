@@ -92,7 +92,14 @@ export default function AdminHome(params) {
       // icon: "pi pi-users",
       url: "sessionupgrade",
       icon: <PiCardsDuotone size={20} />,
-    }
+    },
+    {
+      key: "8",
+      label: "Old Students",
+      // icon: "pi pi-users",
+      url: "oldstudent",
+      icon: <PiStudentDuotone size={20} />,
+    },
     // ,{
     //   key: "7",
     //   label: "Set Fees",

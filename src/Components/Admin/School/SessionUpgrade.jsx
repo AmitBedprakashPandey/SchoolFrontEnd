@@ -1,5 +1,5 @@
 import { Dropdown } from "primereact/dropdown";
-import { FilterMatchMode, FilterOperator } from 'primereact/api';
+import { FilterMatchMode, FilterOperator } from "primereact/api";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
@@ -36,9 +36,9 @@ function SessionUpgrade(params) {
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
     year: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-});
+  });
 
-const [globalFilterValue, setGlobalFilterValue] = useState('');
+  const [globalFilterValue, setGlobalFilterValue] = useState("");
 
   useLayoutEffect(() => {
     dispatch(AllClass(localStorage.getItem("schoolid")));
@@ -46,21 +46,24 @@ const [globalFilterValue, setGlobalFilterValue] = useState('');
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchAllIcards(localStorage.getItem("schoolid"))).then((doc)=>setFilterStudents(doc.payload)
+    dispatch(fetchAllIcards(localStorage.getItem("schoolid"))).then((doc) =>
+      setFilterStudents(doc.payload)
     );
   }, [dispatch]);
 
   useEffect(() => {
-    setFilterStudents(
-      ICards.filter(
-        (item) => item.class === selectClass && item.section === selectSection
-      )
-    );
-  }, [selectClass, selectSection]);
+    if (selectYear) {
+      setFilterStudents(ICards.filter((item) => item.year === selectYear));
+    }
+    if (selectClass && selectSection) {
+      setFilterStudents(
+        filterStudents.filter(
+          (item) => item.class === selectClass && item.section === selectSection
+        )
+      );
+    }
+  }, [selectYear, selectClass, selectSection]);
 
-
-
-  useEffect(() => {}, [selectNewClass, selectNewSection]);
 
   const selectFilterBody = (rowData) => {
     const isSelected = selectedStudents.some(
@@ -94,15 +97,15 @@ const [globalFilterValue, setGlobalFilterValue] = useState('');
     const value = e.target.value;
     let _filters = { ...filters };
 
-    _filters['global'].value = value;
+    _filters["global"].value = value;
 
     setFilters(_filters);
     setGlobalFilterValue(value);
-};
+  };
 
   const Year = [
-    { year: (moment().year()-1)+"-"+moment().year() },
-    { year: moment().year()+"-"+(moment().year() + 1)},
+    { year: moment().year() - 1 + "-" + moment().year() },
+    { year: moment().year() + "-" + (moment().year() + 1) },
   ];
 
   const confirm1 = () => {
@@ -128,12 +131,14 @@ const [globalFilterValue, setGlobalFilterValue] = useState('');
         },
       })
     ).then(() => {
-        setSelectNewClass();
-        setSelectClass();
-        setSelectNewSection();
-        setSelectSection();
-        setSelectNewYear();
-        dispatch(fetchAllIcards(localStorage.getItem("schoolid"))).then((doc)=>setFilterStudents(doc.payload));
+      setSelectNewClass();
+      setSelectClass();
+      setSelectNewSection();
+      setSelectSection();
+      setSelectNewYear();
+      dispatch(fetchAllIcards(localStorage.getItem("schoolid"))).then((doc) =>
+        setFilterStudents(doc.payload)
+      );
     });
   };
 
@@ -142,12 +147,20 @@ const [globalFilterValue, setGlobalFilterValue] = useState('');
       <div className="p-2 flex  items-center justify-between">
         <header className="font-medium">Student Promotion</header>
         <div className="flex justify-content-end border rounded-md">
-                <IconField iconPosition="right">
-                <InputIcon> <BiSearch /></InputIcon>
-                    <InputText value={globalFilterValue}  onChange={onGlobalFilterChange} placeholder="Search Year" className="p-1.5 font-medium" />
-                </IconField>
-            </div>
-        {/* <div className="flex gap-3 items-center">
+          <IconField iconPosition="right">
+            <InputIcon>
+              {" "}
+              <BiSearch />
+            </InputIcon>
+            <InputText
+              value={globalFilterValue}
+              onChange={onGlobalFilterChange}
+              placeholder="Search Year"
+              className="p-1.5 font-medium"
+            />
+          </IconField>
+        </div>
+        <div className="flex gap-3 items-center">
           <span>Session Filter :</span>
           <Dropdown
             //   disabled={selectClass && selectSection ? false : true}
@@ -157,10 +170,9 @@ const [globalFilterValue, setGlobalFilterValue] = useState('');
             options={Year}
             optionLabel="year"
             optionValue="year"
-            onChange={(e) => setSelectYear(e.value)
-            }
+            onChange={(e) => setSelectYear(e.value)}
           />
-        </div> */}
+        </div>
       </div>
       <div className="w-full flex items-center">
         <div className="p-2">
@@ -262,8 +274,8 @@ const [globalFilterValue, setGlobalFilterValue] = useState('');
           globalFilterFields={["year"]}
           className="h-full  relative"
           stripedRows
-           emptyMessage="No customers found."
-           metaKeySelection={false}
+          emptyMessage="No customers found."
+          metaKeySelection={false}
           selection={selectedStudents}
           selectionMode="checkbox"
           onSelectionChange={(e) => setSelectedStudents(e.value)}
