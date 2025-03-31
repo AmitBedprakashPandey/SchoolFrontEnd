@@ -1,7 +1,8 @@
 import "./App.css";
 import "react-image-crop/dist/ReactCrop.css";
 import { Route, Routes } from "react-router-dom";
-import LoginPage from "./Teacher/Componets/LoginPage";
+// import LoginPage from "./Teacher/Componets/LoginPage";
+import LoginPage from "./Components/LoginPageForALL";
 import Home from "./Teacher/Home";
 import TeacherMenuList from "./Teacher/Componets/MenuList";
 import ICard from "./Teacher/Componets/ICard";
@@ -26,15 +27,17 @@ import FeesPage from "./Components/Admin/School/FeesPage";
 import FeePayment from "./Components/Admin/School/FeePayment";
 import SessionUpgrade from "./Components/Admin/School/SessionUpgrade";
 import OldStudent from "./Components/Admin/School/OldStudent";
+import Attendance from "./Components/Admin/Attendance/AttendanceSheet";
 function App() {
+  
   return (
     <>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={<Home />}>
-        <Route index element={<TeacherMenuList />} />
-        <Route index path="icard" element={<ICard />} />
-          </Route>
+          <Route index element={<TeacherMenuList />} />
+          <Route index path="icard" element={<ICard />} />
+        </Route>
         <Route path="/test" element={<ImageCropTest />} />
         <Route path="/crop" element={<ImageCropper />} />
         <Route path="/print" element={<PrintPage />} />
@@ -53,7 +56,11 @@ function App() {
           <Route path="setfees" element={<FeesPage />} />
           <Route path="feespayment" element={<FeePayment />} />
           <Route path="printed" element={<PrintedICards />} />
-          <Route path="deactivewithoutimage" element={<DeActiveWithoutImage />} />
+          <Route
+            path="deactivewithoutimage"
+            element={<DeActiveWithoutImage />}
+          />
+          <Route path="attendence" element={<Attendance />} />
         </Route>
 
         <Route path="/thirdpartylogin" element={<PartyLogin />} />

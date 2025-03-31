@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Message } from "primereact/message";
 import { FloatLabel } from "primereact/floatlabel";
+import { Button } from "primereact/button";
 
 export default function LoginPage() {
   const [user, setUser] = useState("");
@@ -33,65 +34,52 @@ export default function LoginPage() {
 
   return (
     <>
-      <div className="w-screen h-screen bg-blue-500">
-        <div className="login-gray-layer bg-gray-200 rounded-b-3xl">
-          <h1 className="capitalize text-4xl font-bold text-center pt-24">
-            <span className="text-blue-500">Digital</span> branded school
-            solutions
-          </h1>
-          <h2 className="mt-3 flex flex-col items-center">
-            <label className="font-bold text-5xl uppercase text-red-500">
-              Teacher Login
-            </label>
-          </h2>
-        </div>
-        <div className="formAnim md:w-[480px] bg-white absolute bottom-24 left-0 right-0 mx-5 md:mx-auto rounded-3xl border-gray-400 border shadow-gray-500 shadow-md px-5 py-12">
-          {error && (
-            <Message
-              severity="error"
-              text={`${error}`}
-              className="absolute -top-20 left-0 w-full"
+      <div className="">
+        {error && (
+          <Message
+            severity="error"
+            text={`${error}`}
+            className="absolute -top-20 left-0 w-full"
+          />
+        )}
+        <form className="w-full grid place-content-center">
+          <span className="p-float-label mt-5">
+            <InputText
+              id="username"
+              value={user}
+              autoComplete="email"
+              type="email"
+              className="w-96 border-gray-300 border rounded-xl h-16 pl-3"
+              onChange={(e) => setUser(e.target.value)}
             />
-          )}
-          <form>
-            <span className="p-float-label ">
-              <InputText
-                id="username"
-                value={user}
-                autoComplete="email"
-                type="email"
-                className="w-full border-gray-300 border rounded-xl h-16 pl-3"
-                onChange={(e) => setUser(e.target.value)}
+            <label htmlFor="username">Username</label>
+          </span>
+          <span className="p-float-label w-full mt-5">
+            <FloatLabel>
+              <Password
+                inputId="password"
+                value={pass}
+                autoComplete="new-password"
+                onChange={(e) => setPass(e.target.value)}
+                inputClassName="w-full h-16 pl-3"
+                className="w-96 border-gray-300 border rounded-xl overflow-hidden"
+                toggleMask
+                feedback={false}
               />
-              <label htmlFor="username">Username</label>
-            </span>
-            <span className="p-float-label w-full mt-10">
-              <FloatLabel>
-                <Password
-                  inputId="password"
-                  value={pass}
-                  autoComplete="new-password"
-                  onChange={(e) => setPass(e.target.value)}
-                  inputClassName="w-full h-16 pl-3"
-                  className="w-full border-gray-300 border rounded-xl overflow-hidden"
-                  toggleMask
-                  feedback={false}
-                />
-                <label htmlFor="password">Password</label>
-              </FloatLabel>
-            </span>
-            <button
+              <label htmlFor="password">Password</label>
+            </FloatLabel>
+          </span>
+          <div className="w-96 grid place-content-center">
+            <Button
               onClick={onSubmilt}
               type="button"
               // loading={loading}
               label="Login"
               disabled={user && pass ? false : true}
-              className="w-full bg-red-500 text-white p-6 rounded-full text-center mt-5 font-bold p-ripple disabled:bg-red-700"
-            >
-              Login
-            </button>
-          </form>
-        </div>
+              className="bg-blue-600 text-white w-48 py-3"
+            />
+          </div>
+        </form>
       </div>
     </>
   );

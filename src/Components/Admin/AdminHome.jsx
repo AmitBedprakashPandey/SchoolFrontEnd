@@ -15,7 +15,7 @@ import {
   PiIdentificationBadgeDuotone,
   PiXDuotone,
   PiCardsDuotone,
-  PiMoneyDuotone,
+  PiCalendarCheck,
 } from "react-icons/pi";
 import { verifyExpire } from "../../Redux/Slice/ExpireSlice";
 export default function AdminHome(params) {
@@ -99,6 +99,13 @@ export default function AdminHome(params) {
       // icon: "pi pi-users",
       url: "oldstudent",
       icon: <PiStudentDuotone size={20} />,
+    },
+    {
+      key: "9",
+      label: "Staff Attandance",
+      // icon: "pi pi-users",
+      url: "attendence",
+      icon: <PiCalendarCheck size={20} />,
     },
     // ,{
     //   key: "7",
