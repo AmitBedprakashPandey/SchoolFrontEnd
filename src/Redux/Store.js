@@ -10,6 +10,7 @@ import PartySlice from "./Slice/PartySlice";
 import AdminLoginSlice from "./Slice/AdminLoginSlice";
 import AdmitCardTemplate from "./Slice/AdmitCardTemplate";
 import PhotoNumberSlice from "./Slice/PhotoNumberSlice";
+import AttendanceSlice from "./Slice/AttendanceSlice";
 export const Store = configureStore({
   reducer: {
     SchoolAdmin: AdminLoginSlice,
@@ -23,6 +24,7 @@ export const Store = configureStore({
     Template: TemplateSlice,
     PartyAuth: PartySlice,
     AdmitCardTemplate : AdmitCardTemplate,
-    PhotoNumber:PhotoNumberSlice
+    PhotoNumber:PhotoNumberSlice,
+    Attendance:AttendanceSlice
   },
 });

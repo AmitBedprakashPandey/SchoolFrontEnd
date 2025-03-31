@@ -100,13 +100,13 @@ export default function AdminHome(params) {
       url: "oldstudent",
       icon: <PiStudentDuotone size={20} />,
     },
-    {
-      key: "9",
-      label: "Staff Attandance",
-      // icon: "pi pi-users",
-      url: "attendence",
-      icon: <PiCalendarCheck size={20} />,
-    },
+    // {
+    //   key: "9",
+    //   label: "Staff Attandance",
+    //   // icon: "pi pi-users",
+    //   url: "attendence",
+    //   icon: <PiCalendarCheck size={20} />,
+    // },
     // ,{
     //   key: "7",
     //   label: "Set Fees",
