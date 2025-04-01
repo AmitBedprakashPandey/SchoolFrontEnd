@@ -657,13 +657,13 @@ export default function StudentCardFrom({ item, label, visbile, disble }) {
               <option selected disabled>
                 Select Academic Year
               </option>
-              <option>
+              <option selected={currentYear === 2024 ? true : false}>
                 {currentYear - 1}-{currentYear}
               </option>
-              <option>
+              <option selected={currentYear === 2025 ? true : false}>
                 {currentYear}-{currentYear + 1}
               </option>
-              <option>
+              <option selected={currentYear === 2026 ? true : false}>
                 {currentYear + 1}-{currentYear + 2}
               </option>
             </select>

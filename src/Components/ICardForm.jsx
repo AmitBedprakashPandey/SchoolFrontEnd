@@ -631,20 +631,20 @@ export default function ICardForm({ item, label, visbile, disble }) {
             <select
               name="year"
               // disabled={formData?.year ? true : false}
-              value={formData?.year || currentYear + 1}
+              value={formData?.year} 
               onChange={formDataHandler}
               className="pl-2 border-gray-300 border mx-3 w-full rounded-md h-8"
             >
               <option selected disabled>
                 Select Academic Year
               </option>
-              <option>
+              <option selected={currentYear === 2024 ? true : false}>
                 {currentYear - 1}-{currentYear}
               </option>
-              <option>
+              <option selected={currentYear === 2025 ? true : false}>
                 {currentYear}-{currentYear + 1}
               </option>
-              <option>
+              <option selected={currentYear === 2026 ? true : false}>
                 {currentYear + 1}-{currentYear + 2}
               </option>
             </select>

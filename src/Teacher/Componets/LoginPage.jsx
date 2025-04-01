@@ -42,14 +42,14 @@ export default function LoginPage() {
             className="absolute -top-20 left-0 w-full"
           />
         )}
-        <form className="w-full grid place-content-center">
+        <form className="w-80 mx-w-96 grid place-content-center">
           <span className="p-float-label mt-5">
             <InputText
               id="username"
               value={user}
               autoComplete="email"
               type="email"
-              className="w-96 border-gray-300 border rounded-xl h-16 pl-3"
+              className="w-80 mx-w-96 border-gray-300 border rounded-xl h-16 pl-3"
               onChange={(e) => setUser(e.target.value)}
             />
             <label htmlFor="username">Username</label>
@@ -61,15 +61,15 @@ export default function LoginPage() {
                 value={pass}
                 autoComplete="new-password"
                 onChange={(e) => setPass(e.target.value)}
-                inputClassName="w-full h-16 pl-3"
-                className="w-96 border-gray-300 border rounded-xl overflow-hidden"
+                inputClassName="w-80 mx-w-96 h-16 pl-3"
+                className="w-80 mx-w-96 border-gray-300 border rounded-xl overflow-hidden"
                 toggleMask
                 feedback={false}
               />
               <label htmlFor="password">Password</label>
             </FloatLabel>
           </span>
-          <div className="w-96 grid place-content-center">
+          <div className="w-80 mx-w-96 grid place-content-center">
             <Button
               onClick={onSubmilt}
               type="button"

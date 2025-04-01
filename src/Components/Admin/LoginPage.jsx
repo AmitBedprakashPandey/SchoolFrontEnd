@@ -36,7 +36,7 @@ export default function LoginPage(params) {
   };
   return (
     <div className="flex justify-center items-center">
-      <div className="grid grid-cols-1 place-content-center  w-96">
+      <div className="grid grid-cols-1 place-content-center w-full">
         <div className="">
           {error && (
             <Message
@@ -54,7 +54,7 @@ export default function LoginPage(params) {
               name="email"
               value={formData?.email}
               onChange={formHandler}
-              className="w-full h-12 p-2 border-gray-300 border"
+              className="w-80 mx-w-96 h-12 p-2 border-gray-300 border"
             />
             <label htmlFor="username">Username </label>
           </FloatLabel>
@@ -66,8 +66,8 @@ export default function LoginPage(params) {
               name="pass"
               value={formData?.pass}
               onChange={formHandler}
-              inputClassName="w-full h-12 pl-3"
-              className="w-full rounded-md border-gray-300 border"
+              inputClassName="w-80 mx-w-96 h-12 pl-3"
+              className="w-80 mx-w-96 rounded-md border-gray-300 border"
               feedback={false}
               toggleMask
             />
@@ -87,30 +87,4 @@ export default function LoginPage(params) {
   );
 }
 
-const Grid = () => {
-  const [gridBoxes, setGridBoxes] = useState([]);
 
-  useEffect(() => {
-    // Get the screen size
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-
-    // Calculate number of columns and rows based on box size (15x15px)
-    const cols = Math.floor(width / 15);
-    const rows = Math.floor(height / 15);
-
-    // Generate an array for grid boxes
-    const totalBoxes = cols * rows;
-    const boxes = Array.from({ length: totalBoxes });
-
-    setGridBoxes(boxes);
-  }, []);
-
-  return (
-    <div className="grid-container">
-      {gridBoxes.map((_, index) => (
-        <div key={index} className="grid-box"></div>
-      ))}
-    </div>
-  );
-};
