@@ -11,7 +11,7 @@ import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 import TeacherFrom from "./TeacherForm";
 import TeacherLoginUpdate from "./TeacherLoginUpdate";
-import { AllClassBySchoolStatus } from "../../../Redux/Slice/ClassSlice";
+import { AllClass, AllClassBySchoolStatus } from "../../../Redux/Slice/ClassSlice";
 import { AllSectionBySchoolStatus } from "../../../Redux/Slice/SectionSlice";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../Loading";
@@ -34,7 +34,7 @@ export default function Teacher({ school }) {
 
   useEffect(() => {
     dispatch(getAllTeacherBySchool(localStorage.getItem("schoolid")));
-    dispatch(AllClassBySchoolStatus(localStorage.getItem("schoolid")));
+    dispatch(AllClass(localStorage.getItem("schoolid")));
     dispatch(AllSectionBySchoolStatus(localStorage.getItem("schoolid")));
   }, [dispatch]);
 
