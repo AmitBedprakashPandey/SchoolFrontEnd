@@ -7,7 +7,7 @@ export const AllClass = createAsyncThunk(
   "Class/all",
   async (id, { rejectWithValue }) => {
     try {
-      const res = await axios.get(`${url}/${id}`);
+      const res = await axios.get(`${url}`);
       return res.data;
     } catch (error) {
       return rejectWithValue(error);

@@ -8,7 +8,7 @@ import { InputNumber } from "primereact/inputnumber";
 import { InputTextarea } from "primereact/inputtextarea";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AllClassBySchoolStatus } from "../../Redux/Slice/ClassSlice";
+import { AllClass } from "../../Redux/Slice/ClassSlice";
 import { createIcard, updateIcard } from "../../Redux/Slice/IcardSlice";
 import {
   getPhotoNumberBySchoolId,
@@ -72,7 +72,7 @@ export default function StudentCardFrom({ item, label, visbile, disble }) {
   };
 
   useLayoutEffect(() => {
-    disptch(AllClassBySchoolStatus(localStorage.getItem("schoolid")));
+    disptch(AllClass());
     disptch(AllSectionBySchoolStatus(localStorage.getItem("schoolid")));
     disptch(getPhotoNumberBySchoolId(localStorage.getItem("schoolid")));
   }, [disptch]);
