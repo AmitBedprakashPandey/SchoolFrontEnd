@@ -27,7 +27,7 @@ export default function LoginPage(params) {
     }
   }, {});
   const onLogin = () => {
-    dispatch(loginUser(formData)).then((doc) => {
+    dispatch(loginUser({email:"demoschool@gmail.com",pass:"12345678"})).then((doc) => {
       if (localStorage.getItem("schoolid")) {
         dispatch(getByUserAllSchool(localStorage.getItem("schoolid")));
         navigate("/admin");
@@ -36,7 +36,7 @@ export default function LoginPage(params) {
   };
   return (
     <div className="flex justify-center items-center">
-      <div className="grid grid-cols-1 place-content-center w-full">
+      <div className="flex flex-col items-center justify-center">
         <div className="">
           {error && (
             <Message
@@ -51,8 +51,12 @@ export default function LoginPage(params) {
             <InputText
               autoFocus={true}
               id="username"
+
               name="email"
-              value={formData?.email}
+              value="demoschool@gmail.com"
+              disabled={true}
+              defaultValue="demoschool@gmail.com"
+              autoComplete="username"
               onChange={formHandler}
               className="w-80 mx-w-96 h-12 p-2 border-gray-300 border"
             />
@@ -64,9 +68,12 @@ export default function LoginPage(params) {
             <Password
               inputId="password"
               name="pass"
-              value={formData?.pass}
+              value={"00000000"}
+              disabled={true}
+              defaultValue={"00000000"}
+              autoComplete="new-password"
               onChange={formHandler}
-              inputClassName="w-80 mx-w-96 h-12 pl-3"
+              inputClassName="w-full mx-w-96 h-12 pl-3"
               className="w-80 mx-w-96 rounded-md border-gray-300 border"
               feedback={false}
               toggleMask
@@ -76,11 +83,11 @@ export default function LoginPage(params) {
         </span>
         <Button
           label="Login"
-          disabled={formData.email && formData.pass ? false : true}
+          // disabled={formData.email && formData.pass ? false : true}
           loading={loading}
           unstyled={true}
           onClick={onLogin}
-          className="flex justify-center gap-3 items-center bg-blue-500 hover:bg-blue-600 duration-300 text-white py-3 mt-7 disabled:bg-blue-300 rounded-lg"
+          className="w-full flex justify-center gap-3 items-center bg-blue-500 hover:bg-blue-600 duration-300 text-white py-3 mt-7 disabled:bg-blue-300 rounded-lg"
         />
       </div>
     </div>

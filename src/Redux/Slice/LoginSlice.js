@@ -19,7 +19,7 @@ export const loginSlice = createSlice({
   name: "auth",
   initialState: {
     user: null,
-    userData : JSON.parse(localStorage.getItem("loginData")), 
+    userData :null, 
     loading: false,
     error: null,
   },
@@ -29,6 +29,13 @@ export const loginSlice = createSlice({
       state.user = null;
       localStorage.removeItem("loginData");
     },
+    setUserData: (state, action) => {
+      state.userData = action.payload;
+    },
+    clearUserData: (state) => {
+      state.userData = null;
+    },
+
   },
   extraReducers: (builder) => {
     builder
@@ -39,6 +46,7 @@ export const loginSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.error = null;
         state.user = action.payload;
+        state.userData = action.payload;
         localStorage.setItem("loginData", JSON.stringify(action.payload));
         localStorage.setItem("Ttoken",action.payload?.token);
         state.loading = false;
@@ -51,6 +59,6 @@ export const loginSlice = createSlice({
   },
 });
 
-export const { logout, setUser } = loginSlice.actions;
+export const { logout, setUser, setUserData, clearUserData} = loginSlice.actions;
 
 export default loginSlice.reducer;

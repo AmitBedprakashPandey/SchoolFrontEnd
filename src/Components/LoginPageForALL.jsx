@@ -20,7 +20,9 @@ function LoginPageForALL() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const data = [{ name: "Admin" }, { name: "Teacher" }, { name: "Thirdparty" }];
+  const data = [{ name: "Admin" }, { name: "Teacher" },
+    //  { name: "Thirdparty" }
+    ];
   const { error: teacherError } = useSelector((state) => state.Auth);
   const { error: adminerror } = useSelector((state) => state.SchoolAdmin);
 
@@ -69,9 +71,9 @@ function LoginPageForALL() {
             className="w-80 mx-w-96 py-2 border rounded-md"
             panelClassName="text-lg"
           />
+        <div className="w-full max-w-96 mt-5">{selectedComponent}</div>
         </div>
 
-        <div className="w-80 max-w-96">{selectedComponent}</div>
       </div>
     </div>
   );

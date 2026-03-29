@@ -75,7 +75,7 @@ export default function Class() {
             
           />
         </span>
-        {/* <Button
+        <Button
           onClick={() => {
             setLable("s");
             setVisible(true);
@@ -83,7 +83,7 @@ export default function Class() {
           icon={<PiPlus size={20}  />}
           label="Create"
           className="gap-3 bg-blue-600 hover:bg-blue-700 duration-300 text-white px-5 py-3"
-        /> */}
+        />
       </div>
     );
   };

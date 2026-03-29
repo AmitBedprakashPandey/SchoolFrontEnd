@@ -3,11 +3,14 @@ import { Ripple } from "primereact/ripple";
 import { useEffect } from "react";
 import { BiIdCard, BiLogOut } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { json, Link, useNavigate } from "react-router-dom";
+import { setUserData } from "../../Redux/Slice/LoginSlice";
 
 export default function MenuList(params) {
   const navigate = useNavigate();
   const { userData } = useSelector((state) => state.Auth);
+const dispatch = useDispatch()
+
 
   const menuList = [
     {
@@ -17,6 +20,10 @@ export default function MenuList(params) {
       status: false,
     },
   ];
+
+ useEffect(()=>{
+    dispatch(setUserData(JSON.parse(localStorage.getItem("loginData"))));
+ },[dispatch])
 
   useEffect(() => {
     if (!localStorage.getItem("Ttoken")) {

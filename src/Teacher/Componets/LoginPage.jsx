@@ -25,7 +25,7 @@ export default function LoginPage() {
   }, [navigate]);
 
   const onSubmilt = () => {
-    dispatch(loginUser({ email: user, pass: pass })).then((doc) => {
+    dispatch(loginUser({ email: "amit@gmail.com", pass: "12345" })).then((doc) => {
       if (loginUser.fulfilled.match(doc)) {
         navigate("/");
       }
@@ -42,26 +42,30 @@ export default function LoginPage() {
             className="absolute -top-20 left-0 w-full"
           />
         )}
-        <form className="w-80 mx-w-96 grid place-content-center">
-          <span className="p-float-label mt-5">
+        <form className="w-80 mx-w-96 flex flex-col items-center justify-center gap-3">
+          <span className="p-float-label">
             <InputText
               id="username"
-              value={user}
+              value={"amit@gmail.com"}
+              defaultValue={"amit@gmail.com"}
               autoComplete="email"
+              disabled={true}
               type="email"
-              className="w-80 mx-w-96 border-gray-300 border rounded-xl h-16 pl-3"
+              className="w-80 mx-w-96 border-gray-300 border rounded-xl h-12 pl-3"
               onChange={(e) => setUser(e.target.value)}
             />
             <label htmlFor="username">Username</label>
           </span>
-          <span className="p-float-label w-full mt-5">
+          <span className="p-float-label w-full">
             <FloatLabel>
               <Password
                 inputId="password"
-                value={pass}
+                value={"00000000"}
+                disabled={true}
+                defaultValue={"00000000"}
                 autoComplete="new-password"
                 onChange={(e) => setPass(e.target.value)}
-                inputClassName="w-80 mx-w-96 h-16 pl-3"
+                inputClassName="w-80 mx-w-96 h-12 pl-3"
                 className="w-80 mx-w-96 border-gray-300 border rounded-xl overflow-hidden"
                 toggleMask
                 feedback={false}
@@ -69,14 +73,14 @@ export default function LoginPage() {
               <label htmlFor="password">Password</label>
             </FloatLabel>
           </span>
-          <div className="w-80 mx-w-96 grid place-content-center">
+          <div className="w-full mx-w-96 ">
             <Button
               onClick={onSubmilt}
               type="button"
               // loading={loading}
               label="Login"
-              disabled={user && pass ? false : true}
-              className="bg-blue-600 text-white w-48 py-3"
+              // disabled={user && pass ? false : true}
+              className="w-full py-3 bg-blue-600 text-white"
             />
           </div>
         </form>
