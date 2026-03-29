@@ -83,7 +83,7 @@ export default function LoginPage(params) {
         </span>
         <Button
           label="Login"
-          // disabled={formData.email && formData.pass ? false : true}
+          // disabled={formData.email && formData.pass ? false : true} 
           loading={loading}
           unstyled={true}
           onClick={onLogin}
